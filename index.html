@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="theme-color" content="#667eea">
+    <meta name="theme-color" content="#2563eb">
     <title>💧 Calculadora de Ahorro</title>
     <style>
         * {
@@ -13,23 +13,24 @@
         }
 
         :root {
-            --primary: #667eea;
-            --secondary: #764ba2;
-            --accent: #f093fb;
-            --success: #4facfe;
+            --primary: #2563eb;
+            --secondary: #1e40af;
+            --accent: #3b82f6;
+            --success: #0ea5e9;
+            --light-blue: #60a5fa;
             --glass-bg: rgba(255, 255, 255, 0.1);
             --glass-border: rgba(255, 255, 255, 0.18);
         }
 
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #2563eb 0%, #1e40af 100%);
             min-height: 100vh;
             display: flex;
             align-items: center;
             justify-content: center;
             padding: 20px;
-            overflow: hidden;
+            overflow-x: hidden;
         }
 
         .container {
@@ -245,50 +246,94 @@
             color: var(--primary);
         }
 
-        /* Product Cards */
+        /* Product Cards - Compact Layout */
         .product-card {
             background: white;
             border: 3px solid #eee;
             border-radius: 20px;
-            padding: 25px;
+            padding: 20px;
             cursor: pointer;
             transition: all 0.3s;
-            margin-bottom: 20px;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 20px;
         }
 
         .product-card:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.12);
             border-color: var(--primary);
         }
 
         .product-card.selected {
             border-color: var(--primary);
-            background: linear-gradient(135deg, rgba(102,126,234,0.05), rgba(118,75,162,0.05));
-            box-shadow: 0 15px 35px rgba(102,126,234,0.3);
+            background: linear-gradient(135deg, rgba(37,99,235,0.05), rgba(30,64,175,0.05));
+            box-shadow: 0 10px 25px rgba(37,99,235,0.25);
         }
 
-        .product-name {
-            font-size: 1.5em;
-            font-weight: 700;
-            color: #333;
-            margin-bottom: 15px;
+        .product-image-container {
+            flex-shrink: 0;
         }
 
         .product-image {
-            width: 100%;
-            max-width: 200px;
-            height: auto;
-            border-radius: 15px;
-            margin: 15px auto;
+            width: 100px;
+            height: 100px;
+            object-fit: contain;
+            border-radius: 12px;
             display: block;
+        }
+
+        .product-info {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .product-name {
+            font-size: 1.2em;
+            font-weight: 700;
+            color: #333;
+            margin-bottom: 5px;
+        }
+
+        .product-card.selected .product-name {
+            color: var(--primary);
+        }
+
+        /* Price Selection Step */
+        .price-selection-container {
+            text-align: center;
+        }
+
+        .selected-product-preview {
+            background: white;
+            border-radius: 20px;
+            padding: 20px;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 20px;
+            border: 2px solid var(--primary);
+        }
+
+        .selected-product-preview img {
+            width: 80px;
+            height: 80px;
+            object-fit: contain;
+            border-radius: 10px;
+        }
+
+        .selected-product-preview .product-name {
+            margin: 0;
+            color: var(--primary);
         }
 
         .price-options {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-            gap: 10px;
-            margin-top: 20px;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+            margin-top: 15px;
         }
 
         .price-option {
@@ -305,14 +350,436 @@
         .price-option:hover {
             background: white;
             border-color: var(--primary);
-            transform: scale(1.05);
+            transform: scale(1.03);
         }
 
         .price-option.selected {
             background: linear-gradient(135deg, var(--primary), var(--secondary));
             color: white;
             border-color: var(--primary);
-            box-shadow: 0 5px 15px rgba(102,126,234,0.4);
+            box-shadow: 0 5px 15px rgba(37,99,235,0.35);
+        }
+
+        .price-option .price-label {
+            font-size: 0.85em;
+            opacity: 0.8;
+            margin-bottom: 3px;
+        }
+
+        .price-option .price-value {
+            font-size: 1.1em;
+            font-weight: 700;
+        }
+
+        /* Responsive for products */
+        @media (max-width: 768px) {
+            .product-card {
+                flex-direction: column;
+                text-align: center;
+                padding: 15px;
+            }
+
+            .product-image {
+                width: 80px;
+                height: 80px;
+            }
+
+            .product-name {
+                font-size: 1em;
+            }
+
+            .price-options {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 8px;
+            }
+
+            .price-option {
+                padding: 12px 8px;
+            }
+
+            .price-option .price-label {
+                font-size: 0.75em;
+            }
+
+            .price-option .price-value {
+                font-size: 0.95em;
+            }
+
+            .selected-product-preview {
+                flex-direction: column;
+                padding: 15px;
+            }
+
+            .selected-product-preview img {
+                width: 60px;
+                height: 60px;
+            }
+        }
+
+        @media (max-width: 380px) {
+            .price-options {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        /* Change Product Button */
+        .btn-change-product {
+            background: transparent;
+            border: 1px solid var(--primary);
+            color: var(--primary);
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 0.8em;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .btn-change-product:hover {
+            background: var(--primary);
+            color: white;
+        }
+
+        /* Extras Grid */
+        .extras-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+        }
+
+        .extra-card {
+            background: white;
+            border: 2px solid #e0e0e0;
+            border-radius: 15px;
+            padding: 15px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            position: relative;
+        }
+
+        .extra-card:hover {
+            border-color: var(--primary);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .extra-card.selected {
+            border-color: var(--primary);
+            background: linear-gradient(135deg, rgba(37,99,235,0.05), rgba(30,64,175,0.05));
+        }
+
+        .extra-check {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background: var(--primary);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8em;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .extra-card.selected .extra-check {
+            opacity: 1;
+        }
+
+        .extra-image {
+            width: 60px;
+            height: 60px;
+            object-fit: contain;
+            margin-bottom: 10px;
+        }
+
+        .extra-name {
+            font-weight: 600;
+            color: #333;
+            font-size: 0.95em;
+            margin-bottom: 5px;
+        }
+
+        .extra-price {
+            color: var(--primary);
+            font-weight: 700;
+            font-size: 0.9em;
+        }
+
+        /* Result Styles - Full Screen Layout */
+        .result-fullscreen {
+            display: grid;
+            grid-template-columns: 1fr 1.5fr 1fr;
+            gap: 20px;
+            min-height: 100%;
+        }
+
+        .result-section {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+        }
+
+        .result-section-title {
+            font-size: 1.1em;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 15px;
+            text-align: center;
+            padding-bottom: 10px;
+            border-bottom: 2px solid var(--light-blue);
+        }
+
+        /* Ecological Section - Left */
+        .eco-section {
+            background: linear-gradient(135deg, #e0f2fe 0%, #bae6fd 100%);
+        }
+
+        .eco-item {
+            text-align: center;
+            padding: 15px 10px;
+            margin-bottom: 10px;
+            background: white;
+            border-radius: 12px;
+        }
+
+        .eco-icon {
+            font-size: 2em;
+            margin-bottom: 5px;
+        }
+
+        .eco-value {
+            font-size: 1.8em;
+            font-weight: 800;
+            color: var(--primary);
+        }
+
+        .eco-label {
+            font-size: 0.75em;
+            color: #666;
+            line-height: 1.3;
+        }
+
+        /* Product Section - Center */
+        .product-section {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .result-product-image {
+            width: 150px;
+            height: 150px;
+            object-fit: contain;
+            margin-bottom: 15px;
+        }
+
+        .result-product-name {
+            font-size: 1.3em;
+            font-weight: 700;
+            color: var(--primary);
+            text-align: center;
+            margin-bottom: 5px;
+        }
+
+        .result-product-plan {
+            font-size: 0.9em;
+            color: #666;
+            margin-bottom: 15px;
+        }
+
+        .result-price-box {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            padding: 15px 25px;
+            border-radius: 12px;
+            text-align: center;
+            margin-bottom: 15px;
+        }
+
+        .result-price-label {
+            font-size: 0.8em;
+            opacity: 0.9;
+        }
+
+        .result-price-value {
+            font-size: 2em;
+            font-weight: 800;
+        }
+
+        .result-extras-list {
+            width: 100%;
+            margin-top: 10px;
+        }
+
+        .result-extras-list h4 {
+            font-size: 0.9em;
+            color: #333;
+            margin-bottom: 8px;
+        }
+
+        .result-extras-list ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .result-extras-list li {
+            font-size: 0.85em;
+            color: #666;
+            padding: 3px 0;
+        }
+
+        .result-extras-list li::before {
+            content: "✓ ";
+            color: var(--success);
+        }
+
+        /* Economic Section - Right */
+        .economic-section {
+            background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+        }
+
+        .economic-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px;
+            background: white;
+            border-radius: 10px;
+            margin-bottom: 10px;
+        }
+
+        .economic-item.highlight {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+        }
+
+        .economic-label {
+            font-size: 0.85em;
+        }
+
+        .economic-value {
+            font-size: 1.2em;
+            font-weight: 700;
+        }
+
+        .economic-value.current {
+            color: #dc3545;
+        }
+
+        .economic-value.new {
+            color: var(--success);
+        }
+
+        .economic-item.highlight .economic-value {
+            font-size: 1.4em;
+        }
+
+        /* Conditions Section - Bottom */
+        .result-conditions {
+            grid-column: 1 / -1;
+            background: #f8fafc;
+            border-radius: 12px;
+            padding: 15px 20px;
+        }
+
+        .result-conditions h4 {
+            font-size: 0.9em;
+            color: #333;
+            margin-bottom: 8px;
+        }
+
+        .result-conditions p {
+            font-size: 0.8em;
+            color: #666;
+            line-height: 1.5;
+        }
+
+        /* Result Actions */
+        .result-actions {
+            grid-column: 1 / -1;
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            margin-top: 10px;
+        }
+
+        .result-actions .btn {
+            min-width: 180px;
+        }
+
+        /* Responsive for results */
+        @media (max-width: 900px) {
+            .result-fullscreen {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .product-section {
+                grid-column: 1 / -1;
+                order: -1;
+            }
+
+            .result-product-image {
+                width: 100px;
+                height: 100px;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .result-fullscreen {
+                grid-template-columns: 1fr;
+                gap: 15px;
+            }
+
+            .eco-section, .economic-section {
+                order: 0;
+            }
+
+            .result-section {
+                padding: 15px;
+            }
+
+            .eco-value {
+                font-size: 1.5em;
+            }
+
+            .result-price-value {
+                font-size: 1.6em;
+            }
+
+            .result-actions {
+                flex-direction: column;
+            }
+
+            .result-actions .btn {
+                width: 100%;
+            }
+        }
+
+        /* Responsive for extras */
+        @media (max-width: 768px) {
+            .extras-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 10px;
+            }
+
+            .extra-card {
+                padding: 12px;
+            }
+
+            .extra-image {
+                width: 50px;
+                height: 50px;
+            }
+
+            .extra-name {
+                font-size: 0.85em;
+            }
         }
 
         /* Buttons */
@@ -369,47 +836,195 @@
             border: none;
             font-size: 1.5em;
             cursor: pointer;
-            box-shadow: 0 8px 20px rgba(102,126,234,0.4);
+            box-shadow: 0 8px 20px rgba(37,99,235,0.4);
             transition: all 0.3s;
             z-index: 1000;
         }
 
         .admin-btn:hover {
             transform: scale(1.1) rotate(90deg);
-            box-shadow: 0 12px 30px rgba(102,126,234,0.6);
+            box-shadow: 0 12px 30px rgba(37,99,235,0.6);
         }
 
-        /* Responsive */
         @media (max-width: 768px) {
+            .admin-btn {
+                bottom: 20px;
+                right: 20px;
+                width: 50px;
+                height: 50px;
+                font-size: 1.2em;
+            }
+        }
+
+        /* Responsive - Tablet */
+        @media (max-width: 1024px) {
             .container {
                 height: auto;
                 min-height: 90vh;
             }
 
             .card {
-                padding: 25px;
+                padding: 30px;
             }
 
             .header h1 {
-                font-size: 1.8em;
+                font-size: 2em;
+            }
+
+            .question {
+                font-size: 1.5em;
             }
 
             .options-grid {
-                grid-template-columns: 1fr;
+                grid-template-columns: repeat(2, 1fr);
+                gap: 15px;
+            }
+
+            .option-card {
+                padding: 20px;
+            }
+
+            .option-icon {
+                font-size: 2.5em;
+            }
+
+            .option-label {
+                font-size: 1.1em;
+            }
+        }
+
+        /* Responsive - Mobile */
+        @media (max-width: 768px) {
+            body {
+                padding: 10px;
+            }
+
+            .container {
+                height: auto;
+                min-height: 95vh;
+            }
+
+            .card {
+                padding: 20px;
+                border-radius: 20px;
+            }
+
+            .header {
+                margin-bottom: 15px;
+            }
+
+            .header h1 {
+                font-size: 1.5em;
+            }
+
+            .header p {
+                font-size: 0.9em;
+            }
+
+            .steps {
+                margin-bottom: 20px;
+                padding: 0 5px;
+            }
+
+            .steps::before {
+                top: 20px;
+                left: 5%;
+                right: 5%;
+            }
+
+            .step-circle {
+                width: 35px;
+                height: 35px;
+                font-size: 0.9em;
+            }
+
+            .step.active .step-circle {
+                transform: scale(1.1);
+            }
+
+            .step-label {
+                font-size: 0.65em;
+                margin-top: 5px;
+                max-width: 60px;
+                word-wrap: break-word;
+                line-height: 1.2;
+            }
+
+            .question {
+                font-size: 1.3em;
+                margin-bottom: 20px;
+            }
+
+            .options-grid {
+                grid-template-columns: 1fr 1fr;
+                gap: 10px;
+            }
+
+            .option-card {
+                padding: 15px 10px;
+                border-radius: 15px;
+                min-height: auto;
+            }
+
+            .option-icon {
+                font-size: 2em;
+                margin-bottom: 8px;
+            }
+
+            .option-label {
+                font-size: 0.95em;
+                line-height: 1.2;
+                word-wrap: break-word;
             }
 
             .buttons {
                 flex-direction: column;
+                gap: 10px;
+                padding-top: 15px;
+            }
+
+            .btn {
+                padding: 12px 20px;
+                font-size: 1em;
+            }
+        }
+
+        /* Very small screens */
+        @media (max-width: 380px) {
+            .header h1 {
+                font-size: 1.3em;
             }
 
             .step-circle {
-                width: 40px;
-                height: 40px;
-                font-size: 1em;
+                width: 30px;
+                height: 30px;
+                font-size: 0.8em;
             }
 
             .step-label {
-                font-size: 0.7em;
+                font-size: 0.55em;
+                max-width: 50px;
+            }
+
+            .question {
+                font-size: 1.1em;
+            }
+
+            .options-grid {
+                grid-template-columns: 1fr 1fr;
+                gap: 8px;
+            }
+
+            .option-card {
+                padding: 12px 8px;
+            }
+
+            .option-icon {
+                font-size: 1.8em;
+            }
+
+            .option-label {
+                font-size: 0.85em;
             }
         }
 
@@ -502,6 +1117,7 @@
         const app = {
             currentStep: 1,
             totalSteps: 6,
+            deviceType: 'desktop',
             data: {
                 clientType: null,
                 numberOfPeople: null,
@@ -524,10 +1140,41 @@
                 { id: 6, label: 'Resultado' }
             ],
 
+            detectDevice() {
+                const width = window.innerWidth;
+                const userAgent = navigator.userAgent.toLowerCase();
+
+                // Detectar por user agent primero
+                const isMobile = /android|webos|iphone|ipod|blackberry|iemobile|opera mini/i.test(userAgent);
+                const isTablet = /ipad|tablet|playbook|silk/i.test(userAgent) ||
+                    (isMobile && width >= 768);
+
+                // Confirmar con ancho de pantalla
+                if (width <= 480 || (isMobile && !isTablet)) {
+                    this.deviceType = 'mobile';
+                } else if (width <= 1024 || isTablet) {
+                    this.deviceType = 'tablet';
+                } else {
+                    this.deviceType = 'desktop';
+                }
+
+                // Añadir clase al body para estilos específicos
+                document.body.classList.remove('device-mobile', 'device-tablet', 'device-desktop');
+                document.body.classList.add(`device-${this.deviceType}`);
+
+                return this.deviceType;
+            },
+
             init() {
                 DB.init();
+                this.detectDevice();
                 this.loadLogo();
                 this.renderStep();
+
+                // Re-detectar en resize
+                window.addEventListener('resize', () => {
+                    this.detectDevice();
+                });
             },
 
             loadLogo() {
@@ -646,7 +1293,7 @@
             renderStep4() {
                 const products = DB.get('products') || [];
                 const filteredProducts = products.filter(p =>
-                    p.clientType === this.data.clientType &&
+                    (p.clientType === this.data.clientType || p.clientType === 'ambos') &&
                     !p.isExtra &&
                     !p.isDouble &&
                     (!p.peopleRange || this.matchesPeopleRange(p.peopleRange))
@@ -659,51 +1306,502 @@
                     `;
                 }
 
+                // Si ya hay producto seleccionado, mostrar selección de precios
+                if (this.data.selectedProduct) {
+                    return this.renderPriceSelection();
+                }
+
+                // Si no, mostrar lista de productos
                 return `
                     <div class="question">¿Qué producto prefieres?</div>
                     ${filteredProducts.map((product, idx) => `
                         <div class="product-card ${this.data.selectedProduct?.id === product.id ? 'selected' : ''}"
                              onclick="app.selectProduct(${idx})">
-                            <div class="product-name">${product.name}</div>
-                            ${product.image ? `<img src="${product.image}" alt="${product.name}" class="product-image">` : ''}
-                            <div class="price-options">
-                                ${this.renderPriceOptions(product)}
+                            ${product.image ? `
+                                <div class="product-image-container">
+                                    <img src="${product.image}" alt="${product.name}" class="product-image">
+                                </div>
+                            ` : ''}
+                            <div class="product-info">
+                                <div class="product-name">${product.name}</div>
                             </div>
                         </div>
                     `).join('')}
                 `;
             },
 
-            renderPriceOptions(product) {
+            renderPriceSelection() {
+                const product = this.data.selectedProduct;
                 const prices = this.data.clientType === 'empresa' ? product.pricesEmpresa : product.pricesHogar;
                 const paymentOptions = [
-                    { key: 'unico', label: 'Único' },
-                    { key: 'm12', label: '12m' },
-                    { key: 'm24', label: '24m' },
-                    { key: 'm36', label: '36m' },
-                    { key: 'm48', label: '48m' },
-                    { key: 'm60', label: '60m' }
+                    { key: 'unico', label: 'Pago Único', desc: 'Un solo pago' },
+                    { key: 'm12', label: '12 meses', desc: 'Financiación' },
+                    { key: 'm24', label: '24 meses', desc: 'Financiación' },
+                    { key: 'm36', label: '36 meses', desc: 'Financiación' },
+                    { key: 'm48', label: '48 meses', desc: 'Financiación' },
+                    { key: 'm60', label: '60 meses', desc: 'Financiación' }
                 ];
 
-                return paymentOptions.map(opt => {
-                    if (!prices[opt.key] || prices[opt.key] === 0) return '';
-                    const price = prices[opt.key];
-                    const finalPrice = this.data.clientType === 'empresa' ? price * 1.21 : price;
-                    return `
-                        <div class="price-option ${this.data.selectedPayment === opt.key ? 'selected' : ''}"
-                             onclick="event.stopPropagation(); app.selectPayment('${opt.key}')">
-                            ${opt.label}<br><strong>${finalPrice.toFixed(2)}€</strong>
+                const availableOptions = paymentOptions.filter(opt => prices[opt.key] && prices[opt.key] > 0);
+
+                return `
+                    <div class="price-selection-container">
+                        <div class="question">Selecciona tu plan de pago</div>
+                        <div class="selected-product-preview">
+                            ${product.image ? `<img src="${product.image}" alt="${product.name}">` : ''}
+                            <div class="product-name">${product.name}</div>
+                            <button class="btn-change-product" onclick="app.changeProduct()">Cambiar</button>
                         </div>
-                    `;
-                }).join('');
+                        <div class="price-options">
+                            ${availableOptions.map(opt => {
+                                const price = prices[opt.key];
+                                const finalPrice = this.data.clientType === 'empresa' ? price * 1.21 : price;
+                                const isMonthly = opt.key !== 'unico';
+                                return `
+                                    <div class="price-option ${this.data.selectedPayment === opt.key ? 'selected' : ''}"
+                                         onclick="app.selectPayment('${opt.key}')">
+                                        <div class="price-label">${opt.label}</div>
+                                        <div class="price-value">${finalPrice.toFixed(2)}€${isMonthly ? '/mes' : ''}</div>
+                                    </div>
+                                `;
+                            }).join('')}
+                        </div>
+                    </div>
+                `;
+            },
+
+            changeProduct() {
+                this.data.selectedProduct = null;
+                this.data.selectedPayment = null;
+                this.renderStep();
             },
 
             renderStep5() {
-                return '<div class="question">Paso 5 - En desarrollo</div>';
+                const products = DB.get('products') || [];
+                const extras = products.filter(p =>
+                    p.isExtra &&
+                    (p.clientType === this.data.clientType || p.clientType === 'ambos' || !p.clientType)
+                );
+
+                if (extras.length === 0) {
+                    return `
+                        <div class="question">Extras adicionales</div>
+                        <p style="text-align:center;color:#666;padding:20px;">
+                            No hay extras disponibles para tu configuración.
+                        </p>
+                        <p style="text-align:center;color:#888;font-size:0.9em;">
+                            Puedes continuar al siguiente paso.
+                        </p>
+                    `;
+                }
+
+                return `
+                    <div class="question">¿Quieres añadir algún extra?</div>
+                    <p style="text-align:center;color:#666;margin-bottom:20px;font-size:0.9em;">
+                        Selecciona los extras que desees (opcional)
+                    </p>
+                    <div class="extras-grid">
+                        ${extras.map((extra, idx) => {
+                            const isSelected = this.data.selectedExtras.some(e => e.id === extra.id);
+                            const prices = this.data.clientType === 'empresa' ? extra.pricesEmpresa : extra.pricesHogar;
+                            const price = prices?.unico || prices?.m12 || 0;
+                            const finalPrice = this.data.clientType === 'empresa' ? price * 1.21 : price;
+
+                            return `
+                                <div class="extra-card ${isSelected ? 'selected' : ''}"
+                                     onclick="app.toggleExtra(${idx})">
+                                    <div class="extra-check">${isSelected ? '✓' : ''}</div>
+                                    ${extra.image ? `<img src="${extra.image}" alt="${extra.name}" class="extra-image">` : ''}
+                                    <div class="extra-name">${extra.name}</div>
+                                    ${finalPrice > 0 ? `<div class="extra-price">+${finalPrice.toFixed(2)}€</div>` : ''}
+                                </div>
+                            `;
+                        }).join('')}
+                    </div>
+                `;
+            },
+
+            toggleExtra(idx) {
+                const products = DB.get('products') || [];
+                const extras = products.filter(p =>
+                    p.isExtra &&
+                    (p.clientType === this.data.clientType || p.clientType === 'ambos' || !p.clientType)
+                );
+                const extra = extras[idx];
+
+                const existingIdx = this.data.selectedExtras.findIndex(e => e.id === extra.id);
+                if (existingIdx >= 0) {
+                    this.data.selectedExtras.splice(existingIdx, 1);
+                } else {
+                    this.data.selectedExtras.push(extra);
+                }
+                this.renderStep();
             },
 
             renderStep6() {
-                return '<div class="question">Resultado - En desarrollo</div>';
+                const calc = this.calculateSavings();
+                const config = DB.get('config') || {};
+                const productPrice = this.getProductPrice();
+
+                return `
+                    <div class="result-fullscreen">
+                        <!-- Ahorro Ecológico - Izquierda -->
+                        <div class="result-section eco-section">
+                            <div class="result-section-title">🌿 Ahorro Ecológico</div>
+                            <div class="eco-item">
+                                <div class="eco-icon">🧴</div>
+                                <div class="eco-value">${calc.bottlesSavedMonth}</div>
+                                <div class="eco-label">Botellas ahorradas<br>al mes</div>
+                            </div>
+                            <div class="eco-item">
+                                <div class="eco-icon">♻️</div>
+                                <div class="eco-value">${calc.plasticSavedYear.toFixed(1)}</div>
+                                <div class="eco-label">Kg de plástico<br>ahorrado al año</div>
+                            </div>
+                            <div class="eco-item">
+                                <div class="eco-icon">🌍</div>
+                                <div class="eco-value">${calc.co2SavedYear.toFixed(1)}</div>
+                                <div class="eco-label">Kg de CO2<br>ahorrado al año</div>
+                            </div>
+                        </div>
+
+                        <!-- Producto - Centro -->
+                        <div class="result-section product-section">
+                            <div class="result-section-title">📦 Tu Producto</div>
+                            ${this.data.selectedProduct?.image ?
+                                `<img src="${this.data.selectedProduct.image}" alt="${this.data.selectedProduct.name}" class="result-product-image">` : ''}
+                            <div class="result-product-name">${this.data.selectedProduct?.name || 'Producto'}</div>
+                            <div class="result-product-plan">${this.getPaymentLabel()}</div>
+
+                            <div class="result-price-box">
+                                <div class="result-price-label">${this.data.selectedPayment === 'unico' ? 'Precio total' : 'Cuota mensual'}</div>
+                                <div class="result-price-value">${productPrice.toFixed(2)}€</div>
+                            </div>
+
+                            ${this.data.selectedExtras.length > 0 ? `
+                                <div class="result-extras-list">
+                                    <h4>Extras incluidos:</h4>
+                                    <ul>
+                                        ${this.data.selectedExtras.map(e => `<li>${e.name}</li>`).join('')}
+                                    </ul>
+                                </div>
+                            ` : ''}
+                        </div>
+
+                        <!-- Ahorro Económico - Derecha -->
+                        <div class="result-section economic-section">
+                            <div class="result-section-title">💰 Ahorro Económico</div>
+                            <div class="economic-item">
+                                <span class="economic-label">Consumo actual</span>
+                                <span class="economic-value current">${calc.currentCost.toFixed(2)}€/mes</span>
+                            </div>
+                            <div class="economic-item">
+                                <span class="economic-label">Litros/mes</span>
+                                <span class="economic-value">${calc.litersPerMonth}L</span>
+                            </div>
+                            ${this.data.currentService === 'aquaservice' ? `
+                            <div class="economic-item">
+                                <span class="economic-label">Botellones/mes</span>
+                                <span class="economic-value">${calc.aquaserviceBottles}</span>
+                            </div>
+                            ` : ''}
+                            <div class="economic-item">
+                                <span class="economic-label">Con Aquaroo</span>
+                                <span class="economic-value new">${calc.newCost.toFixed(2)}€/mes</span>
+                            </div>
+                            <div class="economic-item highlight">
+                                <span class="economic-label">Ahorro anual</span>
+                                <span class="economic-value">${calc.annualSavings.toFixed(2)}€</span>
+                            </div>
+                            <div class="economic-item highlight">
+                                <span class="economic-label">Ahorro 5 años</span>
+                                <span class="economic-value">${(calc.annualSavings * 5).toFixed(2)}€</span>
+                            </div>
+                        </div>
+
+                        <!-- Condiciones - Abajo -->
+                        <div class="result-conditions">
+                            <h4>📋 Condiciones</h4>
+                            <p>${config.salesConditions || 'Consulta las condiciones de venta con tu comercial.'}</p>
+                            <p style="margin-top:8px;">${config.warrantyConditions || 'Garantía incluida según producto.'}</p>
+                        </div>
+
+                        <!-- Acciones -->
+                        <div class="result-actions">
+                            <button class="btn btn-primary" onclick="app.generateQuote()">
+                                📄 Descargar PDF
+                            </button>
+                            <button class="btn btn-secondary" onclick="app.startOver()">
+                                🔄 Nueva Consulta
+                            </button>
+                        </div>
+                    </div>
+                `;
+            },
+
+            getPaymentLabel() {
+                const labels = {
+                    'unico': 'Pago Único',
+                    'm12': '12 meses',
+                    'm24': '24 meses',
+                    'm36': '36 meses',
+                    'm48': '48 meses',
+                    'm60': '60 meses'
+                };
+                return labels[this.data.selectedPayment] || 'No seleccionado';
+            },
+
+            getProductPrice() {
+                if (!this.data.selectedProduct || !this.data.selectedPayment) return 0;
+
+                const prices = this.data.clientType === 'empresa'
+                    ? this.data.selectedProduct.pricesEmpresa
+                    : this.data.selectedProduct.pricesHogar;
+
+                let price = prices[this.data.selectedPayment] || 0;
+                if (this.data.clientType === 'empresa') {
+                    price *= 1.21; // IVA
+                }
+                return price;
+            },
+
+            calculateSavings() {
+                let currentCost = 0;
+                let newCost = 0;
+
+                // Calcular consumo
+                const numPeople = this.getNumPeople();
+                const litersPerPerson = 2; // Litros por persona al día
+                const daysPerMonth = 30;
+                const litersPerMonth = Math.round(numPeople * litersPerPerson * daysPerMonth);
+                const litersPerYear = litersPerMonth * 12;
+
+                // Variables para cálculos ecológicos
+                let bottlesSavedMonth = 0;
+                let plasticSavedYear = 0;
+                let co2SavedYear = 0;
+                let aquaserviceBottles = 0;
+
+                // Obtener precios de aquaservice según tipo de cliente
+                const aquaPrices = DB.get('aquaservicePrices') || {};
+                const aquaPricesHogar = aquaPrices.hogar || aquaPrices;
+                const aquaPricesEmpresa = aquaPrices.empresa || aquaPrices;
+                const activeAquaPrices = this.data.clientType === 'empresa' ? aquaPricesEmpresa : aquaPricesHogar;
+
+                switch(this.data.currentService) {
+                    case 'bottled':
+                        const brands = DB.get('waterBrands') || [];
+                        const avgPrice = brands.length > 0
+                            ? brands.reduce((sum, b) => sum + b.pricePerLiter, 0) / brands.length
+                            : 0.30;
+                        currentCost = litersPerMonth * avgPrice;
+
+                        // Cálculos ecológicos (botellas de 1.5L)
+                        bottlesSavedMonth = Math.round(litersPerMonth / 1.5);
+                        plasticSavedYear = (bottlesSavedMonth * 12 * 0.035); // 35g por botella
+                        co2SavedYear = (bottlesSavedMonth * 12 * 0.082); // 82g CO2 por botella
+                        break;
+
+                    case 'aquaservice':
+                        aquaserviceBottles = Math.ceil(litersPerMonth / 18.9); // Botellones de 18.9L
+                        const bottleKey = Math.min(Math.max(aquaserviceBottles, 2), 8);
+                        currentCost = (activeAquaPrices[bottleKey] || 29.90) * (30/28);
+
+                        // Cálculos ecológicos (botellones reutilizables pero con huella)
+                        bottlesSavedMonth = aquaserviceBottles;
+                        plasticSavedYear = (aquaserviceBottles * 12 * 0.5); // Estimación
+                        co2SavedYear = (aquaserviceBottles * 12 * 0.3); // Transporte
+                        break;
+
+                    case 'tap':
+                        currentCost = litersPerMonth * 0.002;
+                        bottlesSavedMonth = 0;
+                        plasticSavedYear = 0;
+                        co2SavedYear = 0;
+                        break;
+
+                    case 'osmosis':
+                        currentCost = 25; // Mantenimiento osmosis
+                        bottlesSavedMonth = Math.round(litersPerMonth / 1.5);
+                        plasticSavedYear = 0;
+                        co2SavedYear = 0;
+                        break;
+                }
+
+                // Calcular nuevo coste
+                if (this.data.selectedProduct && this.data.selectedPayment) {
+                    const prices = this.data.clientType === 'empresa'
+                        ? this.data.selectedProduct.pricesEmpresa
+                        : this.data.selectedProduct.pricesHogar;
+
+                    let productPrice = prices[this.data.selectedPayment] || 0;
+                    if (this.data.clientType === 'empresa') {
+                        productPrice *= 1.21;
+                    }
+
+                    if (this.data.selectedPayment === 'unico') {
+                        newCost = productPrice / 60; // Amortización 5 años
+                    } else {
+                        newCost = productPrice;
+                    }
+
+                    // Añadir extras
+                    this.data.selectedExtras.forEach(extra => {
+                        const extraPrices = this.data.clientType === 'empresa'
+                            ? extra.pricesEmpresa
+                            : extra.pricesHogar;
+                        let extraPrice = extraPrices?.unico || extraPrices?.m12 || 0;
+                        if (this.data.clientType === 'empresa') {
+                            extraPrice *= 1.21;
+                        }
+                        newCost += extraPrice / 60;
+                    });
+                }
+
+                const monthlySavings = Math.max(0, currentCost - newCost);
+                const annualSavings = monthlySavings * 12;
+
+                return {
+                    currentCost,
+                    newCost,
+                    monthlySavings,
+                    annualSavings,
+                    litersPerMonth,
+                    litersPerYear,
+                    bottlesSavedMonth,
+                    plasticSavedYear,
+                    co2SavedYear,
+                    aquaserviceBottles
+                };
+            },
+
+            getNumPeople() {
+                const val = this.data.numberOfPeople;
+                if (!val) return 2;
+                if (val === '+6' || val === '+15') return 10;
+                if (val.includes('-')) {
+                    const parts = val.split('-');
+                    return (parseInt(parts[0]) + parseInt(parts[1])) / 2;
+                }
+                return parseInt(val) || 2;
+            },
+
+            generateQuote() {
+                const calc = this.calculateSavings();
+                const config = DB.get('config') || {};
+                const productPrice = this.getProductPrice();
+
+                const { jsPDF } = window.jspdf;
+                const doc = new jsPDF();
+
+                // Header
+                doc.setFillColor(37, 99, 235);
+                doc.rect(0, 0, 210, 40, 'F');
+                doc.setTextColor(255, 255, 255);
+                doc.setFontSize(24);
+                doc.text('Presupuesto Aquaroo', 105, 25, { align: 'center' });
+
+                // Fecha
+                doc.setFontSize(10);
+                doc.text(new Date().toLocaleDateString('es-ES'), 190, 10, { align: 'right' });
+
+                // Reset color
+                doc.setTextColor(0, 0, 0);
+
+                // Información del cliente
+                doc.setFontSize(14);
+                doc.text('Datos del presupuesto', 20, 55);
+                doc.setFontSize(10);
+                doc.text(`Tipo: ${this.data.clientType === 'empresa' ? 'Empresa' : 'Hogar'}`, 20, 65);
+                doc.text(`Personas: ${this.data.numberOfPeople}`, 20, 72);
+                doc.text(`Servicio actual: ${this.getServiceName()}`, 20, 79);
+
+                // Producto
+                doc.setFontSize(14);
+                doc.text('Producto seleccionado', 20, 95);
+                doc.setFontSize(12);
+                doc.setTextColor(37, 99, 235);
+                doc.text(this.data.selectedProduct?.name || 'Producto', 20, 105);
+                doc.setTextColor(0, 0, 0);
+                doc.setFontSize(10);
+                doc.text(`Plan: ${this.getPaymentLabel()}`, 20, 112);
+                doc.text(`Precio: ${productPrice.toFixed(2)}€${this.data.selectedPayment !== 'unico' ? '/mes' : ''}`, 20, 119);
+
+                // Extras
+                if (this.data.selectedExtras.length > 0) {
+                    doc.text('Extras incluidos:', 20, 130);
+                    this.data.selectedExtras.forEach((e, i) => {
+                        doc.text(`  - ${e.name}`, 20, 137 + (i * 7));
+                    });
+                }
+
+                // Ahorro económico
+                let yPos = 155 + (this.data.selectedExtras.length * 7);
+                doc.setFontSize(14);
+                doc.text('Ahorro económico', 20, yPos);
+                yPos += 10;
+                doc.setFontSize(10);
+                doc.text(`Consumo actual: ${calc.currentCost.toFixed(2)}€/mes`, 20, yPos);
+                yPos += 7;
+                doc.text(`Con Aquaroo: ${calc.newCost.toFixed(2)}€/mes`, 20, yPos);
+                yPos += 7;
+                doc.setTextColor(37, 99, 235);
+                doc.setFontSize(12);
+                doc.text(`Ahorro anual: ${calc.annualSavings.toFixed(2)}€`, 20, yPos);
+                doc.text(`Ahorro 5 años: ${(calc.annualSavings * 5).toFixed(2)}€`, 20, yPos + 8);
+
+                // Ahorro ecológico
+                doc.setTextColor(0, 128, 0);
+                yPos += 25;
+                doc.setFontSize(14);
+                doc.text('Ahorro ecológico anual', 20, yPos);
+                doc.setFontSize(10);
+                yPos += 10;
+                doc.text(`Botellas ahorradas: ${calc.bottlesSavedMonth * 12}`, 20, yPos);
+                doc.text(`Plástico evitado: ${calc.plasticSavedYear.toFixed(1)} kg`, 20, yPos + 7);
+                doc.text(`CO2 evitado: ${calc.co2SavedYear.toFixed(1)} kg`, 20, yPos + 14);
+
+                // Condiciones
+                doc.setTextColor(100, 100, 100);
+                doc.setFontSize(8);
+                const condY = 260;
+                doc.text('Condiciones:', 20, condY);
+                const salesText = doc.splitTextToSize(config.salesConditions || 'Consulte condiciones con su comercial.', 170);
+                doc.text(salesText, 20, condY + 5);
+
+                // Footer
+                doc.setFillColor(37, 99, 235);
+                doc.rect(0, 287, 210, 10, 'F');
+
+                // Guardar
+                doc.save(`Presupuesto_Aquaroo_${new Date().toISOString().slice(0,10)}.pdf`);
+            },
+
+            getServiceName() {
+                const names = {
+                    'bottled': 'Agua Embotellada',
+                    'aquaservice': 'Aquaservice',
+                    'tap': 'Agua del Grifo',
+                    'osmosis': 'Osmosis'
+                };
+                return names[this.data.currentService] || 'No especificado';
+            },
+
+            startOver() {
+                this.currentStep = 1;
+                this.data = {
+                    clientType: null,
+                    numberOfPeople: null,
+                    currentService: null,
+                    currentServiceDetails: {},
+                    selectedProduct: null,
+                    selectedPayment: null,
+                    selectedExtras: [],
+                    selectedDouble: null,
+                    installation: 0,
+                    maintenanceIncluded: true
+                };
+                this.renderStep();
             },
 
             // Actions
@@ -725,7 +1823,7 @@
             selectProduct(idx) {
                 const products = DB.get('products') || [];
                 const filteredProducts = products.filter(p =>
-                    p.clientType === this.data.clientType &&
+                    (p.clientType === this.data.clientType || p.clientType === 'ambos') &&
                     !p.isExtra &&
                     !p.isDouble &&
                     (!p.peopleRange || this.matchesPeopleRange(p.peopleRange))

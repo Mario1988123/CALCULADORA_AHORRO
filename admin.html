@@ -31,7 +31,7 @@
         }
  
         .header {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #2563eb 0%, #1e40af 100%);
             color: white;
             padding: 20px;
             box-shadow: var(--shadow);
@@ -410,38 +410,72 @@
             </div>
  
             <div class="card">
-                <div class="card-header">Precios Aquaservice (cada 4 semanas)</div>
+                <div class="card-header">Precios Aquaservice - HOGAR (cada 4 semanas)</div>
                 <div class="price-grid">
                     <div class="form-group">
                         <label>2 botellas</label>
-                        <input type="number" id="aqua2" step="0.01" min="0">
+                        <input type="number" id="aquaHogar2" step="0.01" min="0">
                     </div>
                     <div class="form-group">
                         <label>3 botellas</label>
-                        <input type="number" id="aqua3" step="0.01" min="0">
+                        <input type="number" id="aquaHogar3" step="0.01" min="0">
                     </div>
                     <div class="form-group">
                         <label>4 botellas</label>
-                        <input type="number" id="aqua4" step="0.01" min="0">
+                        <input type="number" id="aquaHogar4" step="0.01" min="0">
                     </div>
                     <div class="form-group">
                         <label>5 botellas</label>
-                        <input type="number" id="aqua5" step="0.01" min="0">
+                        <input type="number" id="aquaHogar5" step="0.01" min="0">
                     </div>
                     <div class="form-group">
                         <label>6 botellas</label>
-                        <input type="number" id="aqua6" step="0.01" min="0">
+                        <input type="number" id="aquaHogar6" step="0.01" min="0">
                     </div>
                     <div class="form-group">
                         <label>7 botellas</label>
-                        <input type="number" id="aqua7" step="0.01" min="0">
+                        <input type="number" id="aquaHogar7" step="0.01" min="0">
                     </div>
                     <div class="form-group">
                         <label>8 botellas</label>
-                        <input type="number" id="aqua8" step="0.01" min="0">
+                        <input type="number" id="aquaHogar8" step="0.01" min="0">
                     </div>
                 </div>
-                <button class="btn btn-success" onclick="admin.saveAquaservicePrices()">Guardar Precios</button>
+            </div>
+
+            <div class="card">
+                <div class="card-header">Precios Aquaservice - EMPRESA (cada 4 semanas, sin IVA)</div>
+                <div class="price-grid">
+                    <div class="form-group">
+                        <label>2 botellas</label>
+                        <input type="number" id="aquaEmpresa2" step="0.01" min="0">
+                    </div>
+                    <div class="form-group">
+                        <label>3 botellas</label>
+                        <input type="number" id="aquaEmpresa3" step="0.01" min="0">
+                    </div>
+                    <div class="form-group">
+                        <label>4 botellas</label>
+                        <input type="number" id="aquaEmpresa4" step="0.01" min="0">
+                    </div>
+                    <div class="form-group">
+                        <label>5 botellas</label>
+                        <input type="number" id="aquaEmpresa5" step="0.01" min="0">
+                    </div>
+                    <div class="form-group">
+                        <label>6 botellas</label>
+                        <input type="number" id="aquaEmpresa6" step="0.01" min="0">
+                    </div>
+                    <div class="form-group">
+                        <label>7 botellas</label>
+                        <input type="number" id="aquaEmpresa7" step="0.01" min="0">
+                    </div>
+                    <div class="form-group">
+                        <label>8 botellas</label>
+                        <input type="number" id="aquaEmpresa8" step="0.01" min="0">
+                    </div>
+                </div>
+                <button class="btn btn-success" onclick="admin.saveAquaservicePrices()">Guardar Precios Aquaservice</button>
             </div>
         </div>
  
@@ -510,8 +544,9 @@
                     <div class="form-group">
                         <label>Para</label>
                         <select id="productClient" required>
-                            <option value="hogar">Hogar</option>
-                            <option value="empresa">Empresa</option>
+                            <option value="hogar">Solo Hogar</option>
+                            <option value="empresa">Solo Empresa</option>
+                            <option value="ambos">Hogar y Empresa</option>
                         </select>
                     </div>
                 </div>
@@ -779,15 +814,25 @@
             // Aquaservice Prices
             loadAquaservicePrices() {
                 const prices = DB.get('aquaservicePrices') || {};
+                const hogarPrices = prices.hogar || prices || {};
+                const empresaPrices = prices.empresa || prices || {};
+
                 for (let i = 2; i <= 8; i++) {
-                    document.getElementById(`aqua${i}`).value = prices[i] || 0;
+                    const hogarEl = document.getElementById(`aquaHogar${i}`);
+                    const empresaEl = document.getElementById(`aquaEmpresa${i}`);
+                    if (hogarEl) hogarEl.value = hogarPrices[i] || 0;
+                    if (empresaEl) empresaEl.value = empresaPrices[i] || 0;
                 }
             },
- 
+
             saveAquaservicePrices() {
-                const prices = {};
+                const prices = {
+                    hogar: {},
+                    empresa: {}
+                };
                 for (let i = 2; i <= 8; i++) {
-                    prices[i] = parseFloat(document.getElementById(`aqua${i}`).value) || 0;
+                    prices.hogar[i] = parseFloat(document.getElementById(`aquaHogar${i}`).value) || 0;
+                    prices.empresa[i] = parseFloat(document.getElementById(`aquaEmpresa${i}`).value) || 0;
                 }
                 DB.set('aquaservicePrices', prices);
                 this.showAlert('Precios de Aquaservice guardados correctamente');
@@ -807,7 +852,7 @@
                     <tr>
                         <td>${product.name}</td>
                         <td>${product.type === 'osmosis' ? 'Osmosis' : 'Dispensador'}</td>
-                        <td>${product.clientType === 'hogar' ? 'Hogar' : 'Empresa'}</td>
+                        <td>${product.clientType === 'hogar' ? 'Hogar' : product.clientType === 'empresa' ? 'Empresa' : 'Hogar y Empresa'}</td>
                         <td>
                             ${product.isDouble ? '🔄 Doble' : ''}
                             ${product.isExtra ? '✨ Extra' : ''}
