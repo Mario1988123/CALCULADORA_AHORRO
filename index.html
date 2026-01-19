@@ -3,8 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="theme-color" content="#2563eb">
-    <title>💧 Calculadora de Ahorro</title>
+    <meta name="theme-color" content="#0066CC">
+    <title>Calculadora de Ahorro - Aquaroo</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
         * {
             margin: 0;
@@ -13,476 +14,366 @@
         }
 
         :root {
-            --primary: #2563eb;
-            --secondary: #1e40af;
-            --accent: #3b82f6;
-            --success: #0ea5e9;
-            --light-blue: #60a5fa;
-            --glass-bg: rgba(255, 255, 255, 0.1);
-            --glass-border: rgba(255, 255, 255, 0.18);
+            --primary: #0066CC;
+            --primary-dark: #004C99;
+            --primary-light: #3399FF;
+            --secondary: #00A3E0;
+            --success: #00C853;
+            --warning: #FF9800;
+            --danger: #E53935;
+            --gray-50: #F8FAFC;
+            --gray-100: #F1F5F9;
+            --gray-200: #E2E8F0;
+            --gray-300: #CBD5E1;
+            --gray-400: #94A3B8;
+            --gray-500: #64748B;
+            --gray-600: #475569;
+            --gray-700: #334155;
+            --gray-800: #1E293B;
+            --gray-900: #0F172A;
+            --white: #FFFFFF;
+            --shadow-sm: 0 1px 2px rgba(0,0,0,0.05);
+            --shadow: 0 4px 6px -1px rgba(0,0,0,0.1);
+            --shadow-lg: 0 10px 15px -3px rgba(0,0,0,0.1);
+            --shadow-xl: 0 20px 25px -5px rgba(0,0,0,0.1);
+            --radius: 12px;
+            --radius-lg: 16px;
+            --radius-xl: 24px;
         }
 
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #2563eb 0%, #1e40af 100%);
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
             min-height: 100vh;
+            padding: 15px;
             display: flex;
             align-items: center;
             justify-content: center;
-            padding: 20px;
-            overflow-x: hidden;
         }
 
         .container {
             width: 100%;
-            max-width: 1200px;
-            height: 90vh;
+            max-width: 1100px;
+            min-height: calc(100vh - 30px);
             display: flex;
             flex-direction: column;
         }
 
-        /* Glassmorphism Card */
         .card {
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(10px);
-            border-radius: 30px;
-            padding: 40px;
-            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
-            border: 1px solid rgba(255, 255, 255, 0.18);
+            background: var(--white);
+            border-radius: var(--radius-xl);
+            box-shadow: var(--shadow-xl);
             flex: 1;
             display: flex;
             flex-direction: column;
             overflow: hidden;
         }
 
+        /* Header compacto */
         .header {
             text-align: center;
-            margin-bottom: 30px;
+            padding: 20px 20px 15px;
+            border-bottom: 1px solid var(--gray-100);
         }
 
         .header h1 {
-            font-size: 2.5em;
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            margin-bottom: 10px;
+            font-size: 1.5em;
             font-weight: 800;
-        }
-
-        .header p {
-            color: #666;
-            font-size: 1.1em;
-        }
-
-        /* Step Indicator */
-        .steps {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 40px;
-            position: relative;
-            padding: 0 20px;
-        }
-
-        .steps::before {
-            content: '';
-            position: absolute;
-            top: 25px;
-            left: 10%;
-            right: 10%;
-            height: 3px;
-            background: linear-gradient(90deg, var(--primary), var(--secondary));
-            opacity: 0.2;
-            z-index: 0;
-        }
-
-        .step {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            position: relative;
-            z-index: 1;
-            flex: 1;
-        }
-
-        .step-circle {
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            background: white;
-            border: 3px solid #ddd;
+            color: var(--primary);
             display: flex;
             align-items: center;
             justify-content: center;
-            font-weight: bold;
-            font-size: 1.2em;
-            color: #999;
-            transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
-            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            gap: 10px;
         }
 
-        .step.active .step-circle {
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
-            color: white;
-            border-color: var(--primary);
-            transform: scale(1.2);
-            box-shadow: 0 8px 20px rgba(102, 126, 234, 0.4);
+        .header p {
+            color: var(--gray-500);
+            font-size: 0.9em;
+            margin-top: 5px;
         }
 
-        .step.completed .step-circle {
-            background: var(--success);
-            border-color: var(--success);
-            color: white;
+        /* Barra de progreso */
+        .progress-container {
+            padding: 15px 30px;
+            background: var(--gray-50);
         }
 
-        .step-label {
-            margin-top: 10px;
+        .progress-bar-wrapper {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .progress-bar {
+            flex: 1;
+            height: 8px;
+            background: var(--gray-200);
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            border-radius: 4px;
+            transition: width 0.3s ease;
+        }
+
+        .progress-text {
             font-size: 0.85em;
-            color: #666;
             font-weight: 600;
-            text-align: center;
-        }
-
-        .step.active .step-label {
-            color: var(--primary);
-            font-weight: 700;
+            color: var(--gray-600);
+            white-space: nowrap;
         }
 
         /* Content Area */
         .content {
             flex: 1;
+            padding: 25px 30px;
             display: flex;
             flex-direction: column;
             overflow-y: auto;
-            padding-right: 10px;
-        }
-
-        .content::-webkit-scrollbar {
-            width: 6px;
-        }
-
-        .content::-webkit-scrollbar-track {
-            background: #f1f1f1;
-            border-radius: 10px;
-        }
-
-        .content::-webkit-scrollbar-thumb {
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
-            border-radius: 10px;
         }
 
         .question {
-            font-size: 1.8em;
+            font-size: 1.4em;
             font-weight: 700;
-            margin-bottom: 30px;
-            color: #333;
+            color: var(--gray-800);
             text-align: center;
+            margin-bottom: 25px;
         }
 
-        /* Option Cards Grid */
+        .sub-question {
+            font-size: 1.1em;
+            font-weight: 600;
+            color: var(--gray-700);
+            text-align: center;
+            margin: 20px 0 15px;
+        }
+
+        /* Options Grid */
         .options-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 20px;
-            margin-bottom: 30px;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .options-grid.two-cols {
+            grid-template-columns: repeat(2, 1fr);
+            max-width: 500px;
+            margin: 0 auto 20px;
+        }
+
+        .options-grid.three-cols {
+            grid-template-columns: repeat(3, 1fr);
+        }
+
+        .options-grid.four-cols {
+            grid-template-columns: repeat(4, 1fr);
         }
 
         .option-card {
-            background: linear-gradient(135deg, rgba(255,255,255,0.9), rgba(255,255,255,0.7));
-            border: 3px solid transparent;
-            border-radius: 20px;
-            padding: 30px;
+            background: var(--white);
+            border: 2px solid var(--gray-200);
+            border-radius: var(--radius-lg);
+            padding: 20px 15px;
             cursor: pointer;
-            transition: all 0.3s ease;
+            transition: all 0.2s ease;
             text-align: center;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .option-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
-            opacity: 0;
-            transition: opacity 0.3s;
-            z-index: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
         }
 
         .option-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.3);
-            border-color: var(--primary);
+            border-color: var(--primary-light);
+            background: var(--gray-50);
         }
 
         .option-card.selected {
             border-color: var(--primary);
-            box-shadow: 0 15px 40px rgba(102, 126, 234, 0.4);
-            transform: scale(1.05);
-        }
-
-        .option-card.selected::before {
-            opacity: 0.1;
+            background: linear-gradient(135deg, rgba(0,102,204,0.05), rgba(0,163,224,0.05));
+            box-shadow: 0 0 0 3px rgba(0,102,204,0.1);
         }
 
         .option-icon {
-            font-size: 3em;
-            margin-bottom: 15px;
-            position: relative;
-            z-index: 1;
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.8em;
+            background: var(--gray-100);
+            border-radius: 12px;
+        }
+
+        .option-card.selected .option-icon {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
         }
 
         .option-label {
-            font-size: 1.3em;
+            font-size: 1em;
             font-weight: 600;
-            color: #333;
-            position: relative;
-            z-index: 1;
+            color: var(--gray-700);
         }
 
         .option-card.selected .option-label {
             color: var(--primary);
         }
 
-        /* Product Cards - Compact Layout */
+        /* Input fields */
+        .input-group {
+            max-width: 400px;
+            margin: 0 auto 20px;
+        }
+
+        .input-field {
+            width: 100%;
+            padding: 14px 18px;
+            border: 2px solid var(--gray-200);
+            border-radius: var(--radius);
+            font-size: 1em;
+            font-family: inherit;
+            transition: border-color 0.2s;
+        }
+
+        .input-field:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+
+        .input-label {
+            display: block;
+            font-size: 0.9em;
+            font-weight: 600;
+            color: var(--gray-600);
+            margin-bottom: 8px;
+        }
+
+        /* Product Cards */
         .product-card {
-            background: white;
-            border: 3px solid #eee;
-            border-radius: 20px;
-            padding: 20px;
+            background: var(--white);
+            border: 2px solid var(--gray-200);
+            border-radius: var(--radius-lg);
+            padding: 15px;
             cursor: pointer;
-            transition: all 0.3s;
-            margin-bottom: 15px;
+            transition: all 0.2s;
             display: flex;
             align-items: center;
-            gap: 20px;
+            gap: 15px;
+            margin-bottom: 12px;
         }
 
         .product-card:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 20px rgba(0,0,0,0.12);
-            border-color: var(--primary);
+            border-color: var(--primary-light);
         }
 
         .product-card.selected {
             border-color: var(--primary);
-            background: linear-gradient(135deg, rgba(37,99,235,0.05), rgba(30,64,175,0.05));
-            box-shadow: 0 10px 25px rgba(37,99,235,0.25);
-        }
-
-        .product-image-container {
-            flex-shrink: 0;
+            background: linear-gradient(135deg, rgba(0,102,204,0.03), rgba(0,163,224,0.03));
         }
 
         .product-image {
-            width: 100px;
-            height: 100px;
+            width: 70px;
+            height: 70px;
             object-fit: contain;
-            border-radius: 12px;
-            display: block;
+            border-radius: 8px;
+            background: var(--gray-50);
         }
 
         .product-info {
             flex: 1;
-            min-width: 0;
         }
 
         .product-name {
-            font-size: 1.2em;
             font-weight: 700;
-            color: #333;
-            margin-bottom: 5px;
+            color: var(--gray-800);
+            margin-bottom: 4px;
         }
 
-        .product-card.selected .product-name {
-            color: var(--primary);
-        }
-
-        /* Price Selection Step */
-        .price-selection-container {
-            text-align: center;
-        }
-
-        .selected-product-preview {
-            background: white;
-            border-radius: 20px;
-            padding: 20px;
-            margin-bottom: 20px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 20px;
-            border: 2px solid var(--primary);
-        }
-
-        .selected-product-preview img {
-            width: 80px;
-            height: 80px;
-            object-fit: contain;
-            border-radius: 10px;
-        }
-
-        .selected-product-preview .product-name {
-            margin: 0;
-            color: var(--primary);
-        }
-
+        /* Price options */
         .price-options {
             display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 12px;
+            grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+            gap: 10px;
             margin-top: 15px;
         }
 
         .price-option {
-            background: #f8f9fa;
-            border: 2px solid #dee2e6;
-            border-radius: 12px;
-            padding: 15px 10px;
+            background: var(--gray-50);
+            border: 2px solid var(--gray-200);
+            border-radius: var(--radius);
+            padding: 12px 8px;
             text-align: center;
             cursor: pointer;
-            transition: all 0.3s;
-            font-weight: 600;
+            transition: all 0.2s;
         }
 
         .price-option:hover {
-            background: white;
-            border-color: var(--primary);
-            transform: scale(1.03);
+            border-color: var(--primary-light);
         }
 
         .price-option.selected {
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
-            color: white;
+            background: var(--primary);
             border-color: var(--primary);
-            box-shadow: 0 5px 15px rgba(37,99,235,0.35);
+            color: white;
         }
 
         .price-option .price-label {
-            font-size: 0.85em;
+            font-size: 0.75em;
             opacity: 0.8;
-            margin-bottom: 3px;
         }
 
         .price-option .price-value {
-            font-size: 1.1em;
+            font-size: 1em;
             font-weight: 700;
         }
 
-        /* Responsive for products */
-        @media (max-width: 768px) {
-            .product-card {
-                flex-direction: column;
-                text-align: center;
-                padding: 15px;
-            }
-
-            .product-image {
-                width: 80px;
-                height: 80px;
-            }
-
-            .product-name {
-                font-size: 1em;
-            }
-
-            .price-options {
-                grid-template-columns: repeat(2, 1fr);
-                gap: 8px;
-            }
-
-            .price-option {
-                padding: 12px 8px;
-            }
-
-            .price-option .price-label {
-                font-size: 0.75em;
-            }
-
-            .price-option .price-value {
-                font-size: 0.95em;
-            }
-
-            .selected-product-preview {
-                flex-direction: column;
-                padding: 15px;
-            }
-
-            .selected-product-preview img {
-                width: 60px;
-                height: 60px;
-            }
-        }
-
-        @media (max-width: 380px) {
-            .price-options {
-                grid-template-columns: repeat(2, 1fr);
-            }
-        }
-
-        /* Change Product Button */
-        .btn-change-product {
-            background: transparent;
-            border: 1px solid var(--primary);
-            color: var(--primary);
-            padding: 6px 12px;
-            border-radius: 20px;
-            font-size: 0.8em;
-            cursor: pointer;
-            transition: all 0.3s;
-        }
-
-        .btn-change-product:hover {
-            background: var(--primary);
-            color: white;
-        }
-
-        /* Extras Grid */
+        /* Extras */
         .extras-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-            gap: 15px;
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            gap: 12px;
         }
 
         .extra-card {
-            background: white;
-            border: 2px solid #e0e0e0;
-            border-radius: 15px;
+            background: var(--white);
+            border: 2px solid var(--gray-200);
+            border-radius: var(--radius);
             padding: 15px;
             text-align: center;
             cursor: pointer;
-            transition: all 0.3s;
+            transition: all 0.2s;
             position: relative;
         }
 
         .extra-card:hover {
-            border-color: var(--primary);
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            border-color: var(--primary-light);
         }
 
         .extra-card.selected {
             border-color: var(--primary);
-            background: linear-gradient(135deg, rgba(37,99,235,0.05), rgba(30,64,175,0.05));
+            background: linear-gradient(135deg, rgba(0,102,204,0.05), rgba(0,163,224,0.05));
         }
 
         .extra-check {
             position: absolute;
-            top: 10px;
-            right: 10px;
-            width: 24px;
-            height: 24px;
-            border-radius: 50%;
+            top: 8px;
+            right: 8px;
+            width: 22px;
+            height: 22px;
             background: var(--primary);
+            border-radius: 50%;
             color: white;
+            font-size: 12px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 0.8em;
             opacity: 0;
-            transition: opacity 0.3s;
+            transition: opacity 0.2s;
         }
 
         .extra-card.selected .extra-check {
@@ -490,332 +381,200 @@
         }
 
         .extra-image {
-            width: 60px;
-            height: 60px;
+            width: 50px;
+            height: 50px;
             object-fit: contain;
-            margin-bottom: 10px;
+            margin-bottom: 8px;
         }
 
         .extra-name {
             font-weight: 600;
-            color: #333;
-            font-size: 0.95em;
-            margin-bottom: 5px;
+            font-size: 0.9em;
+            color: var(--gray-700);
         }
 
         .extra-price {
-            color: var(--primary);
-            font-weight: 700;
-            font-size: 0.9em;
-        }
-
-        /* Result Styles - Full Screen Layout */
-        .result-fullscreen {
-            display: grid;
-            grid-template-columns: 1fr 1.5fr 1fr;
-            gap: 20px;
-            min-height: 100%;
-        }
-
-        .result-section {
-            background: white;
-            border-radius: 15px;
-            padding: 20px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
-        }
-
-        .result-section-title {
-            font-size: 1.1em;
             font-weight: 700;
             color: var(--primary);
-            margin-bottom: 15px;
-            text-align: center;
-            padding-bottom: 10px;
-            border-bottom: 2px solid var(--light-blue);
-        }
-
-        /* Ecological Section - Left */
-        .eco-section {
-            background: linear-gradient(135deg, #e0f2fe 0%, #bae6fd 100%);
-        }
-
-        .eco-item {
-            text-align: center;
-            padding: 15px 10px;
-            margin-bottom: 10px;
-            background: white;
-            border-radius: 12px;
-        }
-
-        .eco-icon {
-            font-size: 2em;
-            margin-bottom: 5px;
-        }
-
-        .eco-value {
-            font-size: 1.8em;
-            font-weight: 800;
-            color: var(--primary);
-        }
-
-        .eco-label {
-            font-size: 0.75em;
-            color: #666;
-            line-height: 1.3;
-        }
-
-        /* Product Section - Center */
-        .product-section {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-
-        .result-product-image {
-            width: 150px;
-            height: 150px;
-            object-fit: contain;
-            margin-bottom: 15px;
-        }
-
-        .result-product-name {
-            font-size: 1.3em;
-            font-weight: 700;
-            color: var(--primary);
-            text-align: center;
-            margin-bottom: 5px;
-        }
-
-        .result-product-plan {
-            font-size: 0.9em;
-            color: #666;
-            margin-bottom: 15px;
-        }
-
-        .result-price-box {
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
-            color: white;
-            padding: 15px 25px;
-            border-radius: 12px;
-            text-align: center;
-            margin-bottom: 15px;
-        }
-
-        .result-price-label {
-            font-size: 0.8em;
-            opacity: 0.9;
-        }
-
-        .result-price-value {
-            font-size: 2em;
-            font-weight: 800;
-        }
-
-        .result-extras-list {
-            width: 100%;
-            margin-top: 10px;
-        }
-
-        .result-extras-list h4 {
-            font-size: 0.9em;
-            color: #333;
-            margin-bottom: 8px;
-        }
-
-        .result-extras-list ul {
-            list-style: none;
-            padding: 0;
-            margin: 0;
-        }
-
-        .result-extras-list li {
             font-size: 0.85em;
-            color: #666;
-            padding: 3px 0;
+            margin-top: 5px;
         }
 
-        .result-extras-list li::before {
-            content: "✓ ";
-            color: var(--success);
+        /* Result Page */
+        .result-page {
+            display: grid;
+            grid-template-columns: 1fr 1.2fr 1fr;
+            gap: 20px;
+            height: 100%;
         }
 
-        /* Economic Section - Right */
-        .economic-section {
-            background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+        .result-column {
+            background: var(--white);
+            border-radius: var(--radius-lg);
+            padding: 20px;
+            border: 1px solid var(--gray-200);
+        }
+
+        .result-column.eco {
+            background: linear-gradient(180deg, #E3F2FD 0%, #BBDEFB 100%);
+            border: none;
+        }
+
+        .result-column.economic {
+            background: linear-gradient(180deg, #E8F5E9 0%, #C8E6C9 100%);
+            border: none;
+        }
+
+        .result-title {
+            font-size: 1em;
+            font-weight: 700;
+            color: var(--gray-700);
+            text-align: center;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid rgba(0,0,0,0.1);
+        }
+
+        .eco-item, .economic-item {
+            background: var(--white);
+            border-radius: var(--radius);
+            padding: 12px;
+            margin-bottom: 10px;
+            text-align: center;
+        }
+
+        .eco-value, .economic-value {
+            font-size: 1.5em;
+            font-weight: 800;
+            color: var(--primary);
+        }
+
+        .eco-label, .economic-label {
+            font-size: 0.75em;
+            color: var(--gray-600);
+            margin-top: 3px;
         }
 
         .economic-item {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 12px;
-            background: white;
-            border-radius: 10px;
-            margin-bottom: 10px;
+            text-align: left;
+        }
+
+        .economic-item .economic-label {
+            margin: 0;
         }
 
         .economic-item.highlight {
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            background: var(--primary);
             color: white;
         }
 
-        .economic-label {
-            font-size: 0.85em;
+        .economic-item.highlight .economic-value,
+        .economic-item.highlight .economic-label {
+            color: white;
         }
 
-        .economic-value {
-            font-size: 1.2em;
+        .result-product-section {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .result-product-image {
+            width: 120px;
+            height: 120px;
+            object-fit: contain;
+            margin-bottom: 10px;
+        }
+
+        .result-product-name {
+            font-size: 1.1em;
             font-weight: 700;
+            color: var(--primary);
+            text-align: center;
         }
 
-        .economic-value.current {
-            color: #dc3545;
+        .result-product-plan {
+            font-size: 0.9em;
+            color: var(--gray-500);
+            margin-bottom: 15px;
         }
 
-        .economic-value.new {
-            color: var(--success);
+        .result-price-box {
+            background: var(--primary);
+            color: white;
+            padding: 15px 25px;
+            border-radius: var(--radius);
+            text-align: center;
         }
 
-        .economic-item.highlight .economic-value {
-            font-size: 1.4em;
+        .result-price-box .label {
+            font-size: 0.8em;
+            opacity: 0.9;
         }
 
-        /* Conditions Section - Bottom */
+        .result-price-box .value {
+            font-size: 1.8em;
+            font-weight: 800;
+        }
+
         .result-conditions {
             grid-column: 1 / -1;
-            background: #f8fafc;
-            border-radius: 12px;
-            padding: 15px 20px;
+            background: var(--gray-50);
+            border-radius: var(--radius);
+            padding: 15px;
+            font-size: 0.85em;
+            color: var(--gray-600);
         }
 
-        .result-conditions h4 {
-            font-size: 0.9em;
-            color: #333;
-            margin-bottom: 8px;
-        }
-
-        .result-conditions p {
-            font-size: 0.8em;
-            color: #666;
-            line-height: 1.5;
-        }
-
-        /* Result Actions */
         .result-actions {
             grid-column: 1 / -1;
             display: flex;
             gap: 15px;
             justify-content: center;
-            margin-top: 10px;
-        }
-
-        .result-actions .btn {
-            min-width: 180px;
-        }
-
-        /* Responsive for results */
-        @media (max-width: 900px) {
-            .result-fullscreen {
-                grid-template-columns: 1fr 1fr;
-            }
-
-            .product-section {
-                grid-column: 1 / -1;
-                order: -1;
-            }
-
-            .result-product-image {
-                width: 100px;
-                height: 100px;
-            }
-        }
-
-        @media (max-width: 600px) {
-            .result-fullscreen {
-                grid-template-columns: 1fr;
-                gap: 15px;
-            }
-
-            .eco-section, .economic-section {
-                order: 0;
-            }
-
-            .result-section {
-                padding: 15px;
-            }
-
-            .eco-value {
-                font-size: 1.5em;
-            }
-
-            .result-price-value {
-                font-size: 1.6em;
-            }
-
-            .result-actions {
-                flex-direction: column;
-            }
-
-            .result-actions .btn {
-                width: 100%;
-            }
-        }
-
-        /* Responsive for extras */
-        @media (max-width: 768px) {
-            .extras-grid {
-                grid-template-columns: repeat(2, 1fr);
-                gap: 10px;
-            }
-
-            .extra-card {
-                padding: 12px;
-            }
-
-            .extra-image {
-                width: 50px;
-                height: 50px;
-            }
-
-            .extra-name {
-                font-size: 0.85em;
-            }
         }
 
         /* Buttons */
         .buttons {
             display: flex;
             gap: 15px;
-            justify-content: space-between;
-            margin-top: auto;
-            padding-top: 20px;
+            padding: 20px 30px;
+            border-top: 1px solid var(--gray-100);
+            background: var(--gray-50);
         }
 
         .btn {
-            padding: 15px 40px;
-            border: none;
-            border-radius: 50px;
-            font-size: 1.1em;
-            font-weight: 700;
-            cursor: pointer;
-            transition: all 0.3s;
             flex: 1;
-        }
-
-        .btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+            padding: 14px 24px;
+            border: none;
+            border-radius: var(--radius);
+            font-size: 1em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-family: inherit;
         }
 
         .btn-primary {
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            background: var(--primary);
             color: white;
         }
 
+        .btn-primary:hover {
+            background: var(--primary-dark);
+        }
+
         .btn-secondary {
-            background: white;
-            color: var(--primary);
-            border: 2px solid var(--primary);
+            background: var(--white);
+            color: var(--gray-700);
+            border: 2px solid var(--gray-300);
+        }
+
+        .btn-secondary:hover {
+            border-color: var(--gray-400);
+            background: var(--gray-50);
         }
 
         .btn:disabled {
@@ -826,226 +585,105 @@
         /* Admin Button */
         .admin-btn {
             position: fixed;
-            bottom: 30px;
-            right: 30px;
-            width: 60px;
-            height: 60px;
+            bottom: 20px;
+            right: 20px;
+            width: 50px;
+            height: 50px;
             border-radius: 50%;
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            background: var(--gray-800);
             color: white;
             border: none;
-            font-size: 1.5em;
+            font-size: 1.2em;
             cursor: pointer;
-            box-shadow: 0 8px 20px rgba(37,99,235,0.4);
-            transition: all 0.3s;
+            box-shadow: var(--shadow-lg);
+            transition: all 0.2s;
             z-index: 1000;
         }
 
         .admin-btn:hover {
-            transform: scale(1.1) rotate(90deg);
-            box-shadow: 0 12px 30px rgba(37,99,235,0.6);
+            background: var(--gray-900);
+            transform: scale(1.05);
         }
 
-        @media (max-width: 768px) {
-            .admin-btn {
-                bottom: 20px;
-                right: 20px;
-                width: 50px;
-                height: 50px;
-                font-size: 1.2em;
+        /* Responsive */
+        @media (max-width: 900px) {
+            .result-page {
+                grid-template-columns: 1fr 1fr;
             }
-        }
-
-        /* Responsive - Tablet */
-        @media (max-width: 1024px) {
-            .container {
-                height: auto;
-                min-height: 90vh;
-            }
-
-            .card {
-                padding: 30px;
-            }
-
-            .header h1 {
-                font-size: 2em;
-            }
-
-            .question {
-                font-size: 1.5em;
-            }
-
-            .options-grid {
-                grid-template-columns: repeat(2, 1fr);
-                gap: 15px;
-            }
-
-            .option-card {
-                padding: 20px;
-            }
-
-            .option-icon {
-                font-size: 2.5em;
-            }
-
-            .option-label {
-                font-size: 1.1em;
+            .result-column.product {
+                grid-column: 1 / -1;
+                order: -1;
             }
         }
 
-        /* Responsive - Mobile */
         @media (max-width: 768px) {
             body {
                 padding: 10px;
             }
 
-            .container {
-                height: auto;
-                min-height: 95vh;
-            }
-
-            .card {
-                padding: 20px;
-                border-radius: 20px;
-            }
-
             .header {
-                margin-bottom: 15px;
+                padding: 15px 15px 10px;
             }
 
             .header h1 {
-                font-size: 1.5em;
+                font-size: 1.3em;
             }
 
-            .header p {
-                font-size: 0.9em;
+            .progress-container {
+                padding: 10px 15px;
             }
 
-            .steps {
-                margin-bottom: 20px;
-                padding: 0 5px;
-            }
-
-            .steps::before {
-                top: 20px;
-                left: 5%;
-                right: 5%;
-            }
-
-            .step-circle {
-                width: 35px;
-                height: 35px;
-                font-size: 0.9em;
-            }
-
-            .step.active .step-circle {
-                transform: scale(1.1);
-            }
-
-            .step-label {
-                font-size: 0.65em;
-                margin-top: 5px;
-                max-width: 60px;
-                word-wrap: break-word;
-                line-height: 1.2;
+            .content {
+                padding: 20px 15px;
             }
 
             .question {
-                font-size: 1.3em;
-                margin-bottom: 20px;
+                font-size: 1.2em;
             }
 
             .options-grid {
                 grid-template-columns: 1fr 1fr;
-                gap: 10px;
+            }
+
+            .options-grid.two-cols {
+                max-width: 100%;
             }
 
             .option-card {
                 padding: 15px 10px;
-                border-radius: 15px;
-                min-height: auto;
-            }
-
-            .option-icon {
-                font-size: 2em;
-                margin-bottom: 8px;
-            }
-
-            .option-label {
-                font-size: 0.95em;
-                line-height: 1.2;
-                word-wrap: break-word;
             }
 
             .buttons {
-                flex-direction: column;
-                gap: 10px;
-                padding-top: 15px;
+                padding: 15px;
             }
 
-            .btn {
-                padding: 12px 20px;
-                font-size: 1em;
+            .result-page {
+                grid-template-columns: 1fr;
+            }
+
+            .result-column {
+                padding: 15px;
             }
         }
 
-        /* Very small screens */
-        @media (max-width: 380px) {
-            .header h1 {
-                font-size: 1.3em;
-            }
-
-            .step-circle {
-                width: 30px;
-                height: 30px;
-                font-size: 0.8em;
-            }
-
-            .step-label {
-                font-size: 0.55em;
-                max-width: 50px;
-            }
-
-            .question {
-                font-size: 1.1em;
-            }
-
-            .options-grid {
-                grid-template-columns: 1fr 1fr;
-                gap: 8px;
-            }
-
-            .option-card {
-                padding: 12px 8px;
-            }
-
+        @media (max-width: 480px) {
             .option-icon {
-                font-size: 1.8em;
+                width: 40px;
+                height: 40px;
+                font-size: 1.5em;
             }
 
             .option-label {
-                font-size: 0.85em;
+                font-size: 0.9em;
+            }
+
+            .price-options {
+                grid-template-columns: repeat(3, 1fr);
             }
         }
 
         .hidden {
             display: none !important;
-        }
-
-        /* Animations */
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        .content > * {
-            animation: fadeInUp 0.5s ease-out;
         }
     </style>
 </head>
@@ -1055,16 +693,20 @@
             <div class="header">
                 <div id="logoContainer"></div>
                 <h1>💧 Calculadora de Ahorro</h1>
-                <p>Descubre cuánto puedes ahorrar</p>
+                <p>Descubre cuánto puedes ahorrar con Aquaroo</p>
             </div>
 
-            <!-- Steps Indicator -->
-            <div class="steps" id="stepsIndicator"></div>
+            <div class="progress-container">
+                <div class="progress-bar-wrapper">
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="progressFill" style="width: 16.6%"></div>
+                    </div>
+                    <span class="progress-text" id="progressText">Paso 1 de 6</span>
+                </div>
+            </div>
 
-            <!-- Content -->
             <div class="content" id="stepContent"></div>
 
-            <!-- Buttons -->
             <div class="buttons">
                 <button class="btn btn-secondary" id="btnBack" onclick="app.previousStep()">
                     ← Atrás
@@ -1076,14 +718,12 @@
         </div>
     </div>
 
-    <!-- Admin Button -->
     <button class="admin-btn" onclick="window.location.href='admin.html'" title="Panel de Administración">
         ⚙️
     </button>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script>
-        // Database
         const DB = {
             get(key, defaultValue = null) {
                 const item = localStorage.getItem(key);
@@ -1096,15 +736,18 @@
                 if (!this.get('initialized')) {
                     this.set('config', {
                         logo: '',
-                        salesConditions: 'Condiciones de venta estándar.',
-                        warrantyConditions: 'Garantía estándar de 2 años.'
+                        salesConditions: 'Condiciones de venta estándar. Consulte con su comercial.',
+                        warrantyConditions: 'Garantía de 2 años incluida.'
                     });
                     this.set('waterBrands', [
-                        { name: 'Agua Mineral', pricePerLiter: 0.30 }
+                        { name: 'Bezoya', pricePerLiter: 0.40 },
+                        { name: 'Font Vella', pricePerLiter: 0.45 },
+                        { name: 'Aquarel', pricePerLiter: 0.35 },
+                        { name: 'Marca Blanca', pricePerLiter: 0.25 }
                     ]);
                     this.set('aquaservicePrices', {
-                        2: 19.90, 3: 29.90, 4: 39.90, 5: 49.90,
-                        6: 59.90, 7: 69.90, 8: 79.90
+                        hogar: { 2: 19.90, 3: 29.90, 4: 39.90, 5: 49.90, 6: 59.90, 7: 69.90, 8: 79.90 },
+                        empresa: { 2: 17.90, 3: 26.90, 4: 35.90, 5: 44.90, 6: 53.90, 7: 62.90, 8: 71.90 }
                     });
                     this.set('products', []);
                     this.set('quotes', []);
@@ -1113,96 +756,50 @@
             }
         };
 
-        // App
         const app = {
             currentStep: 1,
             totalSteps: 6,
-            deviceType: 'desktop',
             data: {
                 clientType: null,
                 numberOfPeople: null,
                 currentService: null,
-                currentServiceDetails: {},
+                litersPerPersonDay: 2,
+                waterBrand: null,
+                aquaserviceBottles: null,
+                osmosisMonthlyCost: 0,
                 selectedProduct: null,
                 selectedPayment: null,
                 selectedExtras: [],
-                selectedDouble: null,
-                installation: 0,
-                maintenanceIncluded: true
-            },
-
-            steps: [
-                { id: 1, label: 'Cliente' },
-                { id: 2, label: 'Personas' },
-                { id: 3, label: 'Servicio' },
-                { id: 4, label: 'Producto' },
-                { id: 5, label: 'Extras' },
-                { id: 6, label: 'Resultado' }
-            ],
-
-            detectDevice() {
-                const width = window.innerWidth;
-                const userAgent = navigator.userAgent.toLowerCase();
-
-                // Detectar por user agent primero
-                const isMobile = /android|webos|iphone|ipod|blackberry|iemobile|opera mini/i.test(userAgent);
-                const isTablet = /ipad|tablet|playbook|silk/i.test(userAgent) ||
-                    (isMobile && width >= 768);
-
-                // Confirmar con ancho de pantalla
-                if (width <= 480 || (isMobile && !isTablet)) {
-                    this.deviceType = 'mobile';
-                } else if (width <= 1024 || isTablet) {
-                    this.deviceType = 'tablet';
-                } else {
-                    this.deviceType = 'desktop';
-                }
-
-                // Añadir clase al body para estilos específicos
-                document.body.classList.remove('device-mobile', 'device-tablet', 'device-desktop');
-                document.body.classList.add(`device-${this.deviceType}`);
-
-                return this.deviceType;
             },
 
             init() {
                 DB.init();
-                this.detectDevice();
                 this.loadLogo();
                 this.renderStep();
-
-                // Re-detectar en resize
-                window.addEventListener('resize', () => {
-                    this.detectDevice();
-                });
             },
 
             loadLogo() {
                 const config = DB.get('config');
                 if (config && config.logo) {
                     document.getElementById('logoContainer').innerHTML =
-                        `<img src="${config.logo}" style="max-width:150px;border-radius:10px;">`;
+                        `<img src="${config.logo}" style="max-width:120px;margin-bottom:10px;">`;
                 }
             },
 
-            renderStepsIndicator() {
-                const html = this.steps.map(step => `
-                    <div class="step ${step.id === this.currentStep ? 'active' : ''} ${step.id < this.currentStep ? 'completed' : ''}">
-                        <div class="step-circle">${step.id}</div>
-                        <div class="step-label">${step.label}</div>
-                    </div>
-                `).join('');
-                document.getElementById('stepsIndicator').innerHTML = html;
+            updateProgress() {
+                const progress = (this.currentStep / this.totalSteps) * 100;
+                document.getElementById('progressFill').style.width = progress + '%';
+                document.getElementById('progressText').textContent = `Paso ${this.currentStep} de ${this.totalSteps}`;
             },
 
             renderStep() {
-                this.renderStepsIndicator();
+                this.updateProgress();
                 const content = document.getElementById('stepContent');
                 const btnBack = document.getElementById('btnBack');
                 const btnNext = document.getElementById('btnNext');
 
                 btnBack.style.display = this.currentStep === 1 ? 'none' : 'block';
-                btnNext.textContent = this.currentStep === this.totalSteps ? 'Ver Resultado' : 'Siguiente →';
+                btnNext.textContent = this.currentStep === this.totalSteps ? '📄 Ver Resultado' : 'Siguiente →';
 
                 switch(this.currentStep) {
                     case 1: content.innerHTML = this.renderStep1(); break;
@@ -1216,8 +813,8 @@
 
             renderStep1() {
                 return `
-                    <div class="question">¿Es para empresa o hogar?</div>
-                    <div class="options-grid">
+                    <div class="question">¿Es para uso doméstico o empresarial?</div>
+                    <div class="options-grid two-cols">
                         <div class="option-card ${this.data.clientType === 'hogar' ? 'selected' : ''}"
                              onclick="app.selectClientType('hogar')">
                             <div class="option-icon">🏠</div>
@@ -1233,24 +830,28 @@
             },
 
             renderStep2() {
+                const question = this.data.clientType === 'empresa'
+                    ? '¿Cuántas personas trabajan en la oficina?'
+                    : '¿Cuántas personas vivís en casa?';
+
                 const options = this.data.clientType === 'empresa'
                     ? [
-                        { value: '1-5', label: '1-5', icon: '👥' },
-                        { value: '5-15', label: '5-15', icon: '👨‍👩‍👧‍👦' },
-                        { value: '+15', label: '+15', icon: '🏬' }
+                        { value: '1-5', label: '1-5', icon: '👤' },
+                        { value: '5-15', label: '5-15', icon: '👥' },
+                        { value: '+15', label: '+15', icon: '👥' }
                     ]
                     : [
                         { value: '1', label: '1', icon: '👤' },
-                        { value: '2', label: '2', icon: '👫' },
-                        { value: '3', label: '3', icon: '👨‍👩‍👧' },
-                        { value: '4', label: '4', icon: '👨‍👩‍👧‍👦' },
-                        { value: '5', label: '5', icon: '👨‍👩‍👧‍👦' },
-                        { value: '+6', label: '+6', icon: '👨‍👩‍👧‍👦' }
+                        { value: '2', label: '2', icon: '👤' },
+                        { value: '3', label: '3', icon: '👤' },
+                        { value: '4', label: '4', icon: '👤' },
+                        { value: '5', label: '5', icon: '👤' },
+                        { value: '+6', label: '6+', icon: '👤' }
                     ];
 
                 return `
-                    <div class="question">¿Cuántas personas?</div>
-                    <div class="options-grid">
+                    <div class="question">${question}</div>
+                    <div class="options-grid ${this.data.clientType === 'empresa' ? 'three-cols' : ''}">
                         ${options.map(opt => `
                             <div class="option-card ${this.data.numberOfPeople === opt.value ? 'selected' : ''}"
                                  onclick="app.selectNumberOfPeople('${opt.value}')">
@@ -1263,30 +864,75 @@
             },
 
             renderStep3() {
+                const services = [
+                    { value: 'bottled', label: 'Agua Embotellada', icon: '🧴' },
+                    { value: 'aquaservice', label: 'Aquaservice', icon: '💧' },
+                    { value: 'tap', label: 'Agua del Grifo', icon: '🚰' },
+                    { value: 'osmosis', label: 'Osmosis', icon: '💎' }
+                ];
+
+                let subQuestions = '';
+
+                if (this.data.currentService === 'bottled') {
+                    const brands = DB.get('waterBrands') || [];
+                    subQuestions = `
+                        <div class="sub-question">¿Cuántos litros bebéis al día por persona?</div>
+                        <div class="input-group">
+                            <input type="number" class="input-field" id="litersPerPerson"
+                                   value="${this.data.litersPerPersonDay}" min="0.5" max="5" step="0.5"
+                                   onchange="app.updateLitersPerPerson(this.value)">
+                        </div>
+                        <div class="sub-question">¿Qué marca de agua compráis?</div>
+                        <div class="options-grid four-cols">
+                            ${brands.map(brand => `
+                                <div class="option-card ${this.data.waterBrand === brand.name ? 'selected' : ''}"
+                                     onclick="app.selectWaterBrand('${brand.name}')">
+                                    <div class="option-label">${brand.name}</div>
+                                    <div style="font-size:0.8em;color:var(--gray-500)">${brand.pricePerLiter.toFixed(2)}€/L</div>
+                                </div>
+                            `).join('')}
+                        </div>
+                    `;
+                } else if (this.data.currentService === 'aquaservice') {
+                    subQuestions = `
+                        <div class="sub-question">¿Cuántas garrafas os entregan por reparto?</div>
+                        <div class="options-grid">
+                            ${[2,3,4,5,6,7,8].map(num => `
+                                <div class="option-card ${this.data.aquaserviceBottles === num ? 'selected' : ''}"
+                                     onclick="app.selectAquaserviceBottles(${num})">
+                                    <div class="option-icon">🫗</div>
+                                    <div class="option-label">${num} garrafas</div>
+                                </div>
+                            `).join('')}
+                        </div>
+                    `;
+                } else if (this.data.currentService === 'osmosis') {
+                    subQuestions = `
+                        <div class="sub-question">¿Cuánto pagas mensualmente por el servicio/mantenimiento?</div>
+                        <div class="input-group">
+                            <input type="number" class="input-field" id="osmosisCost"
+                                   value="${this.data.osmosisMonthlyCost}" min="0" step="1"
+                                   placeholder="0 si es en propiedad"
+                                   onchange="app.updateOsmosisCost(this.value)">
+                        </div>
+                        <p style="text-align:center;color:var(--gray-500);font-size:0.85em;">
+                            Pon 0€ si el equipo es tuyo y solo pagas filtros ocasionalmente
+                        </p>
+                    `;
+                }
+
                 return `
-                    <div class="question">¿Qué servicio de agua tienes?</div>
-                    <div class="options-grid">
-                        <div class="option-card ${this.data.currentService === 'bottled' ? 'selected' : ''}"
-                             onclick="app.selectCurrentService('bottled')">
-                            <div class="option-icon">🧴</div>
-                            <div class="option-label">Agua Embotellada</div>
-                        </div>
-                        <div class="option-card ${this.data.currentService === 'aquaservice' ? 'selected' : ''}"
-                             onclick="app.selectCurrentService('aquaservice')">
-                            <div class="option-icon">💧</div>
-                            <div class="option-label">Aquaservice</div>
-                        </div>
-                        <div class="option-card ${this.data.currentService === 'tap' ? 'selected' : ''}"
-                             onclick="app.selectCurrentService('tap')">
-                            <div class="option-icon">🚰</div>
-                            <div class="option-label">Agua del Grifo</div>
-                        </div>
-                        <div class="option-card ${this.data.currentService === 'osmosis' ? 'selected' : ''}"
-                             onclick="app.selectCurrentService('osmosis')">
-                            <div class="option-icon">💎</div>
-                            <div class="option-label">Osmosis</div>
-                        </div>
+                    <div class="question">¿Qué servicio de agua usáis actualmente?</div>
+                    <div class="options-grid four-cols">
+                        ${services.map(s => `
+                            <div class="option-card ${this.data.currentService === s.value ? 'selected' : ''}"
+                                 onclick="app.selectCurrentService('${s.value}')">
+                                <div class="option-icon">${s.icon}</div>
+                                <div class="option-label">${s.label}</div>
+                            </div>
+                        `).join('')}
                     </div>
+                    ${subQuestions}
                 `;
             },
 
@@ -1295,33 +941,29 @@
                 const filteredProducts = products.filter(p =>
                     (p.clientType === this.data.clientType || p.clientType === 'ambos') &&
                     !p.isExtra &&
-                    !p.isDouble &&
-                    (!p.peopleRange || this.matchesPeopleRange(p.peopleRange))
+                    !p.isDouble
                 );
 
                 if (filteredProducts.length === 0) {
                     return `
-                        <div class="question">No hay productos</div>
-                        <p style="text-align:center;color:#666;">Configura productos en el panel de administración</p>
+                        <div class="question">No hay productos disponibles</div>
+                        <p style="text-align:center;color:var(--gray-500);">
+                            Configura productos en el panel de administración
+                        </p>
                     `;
                 }
 
-                // Si ya hay producto seleccionado, mostrar selección de precios
                 if (this.data.selectedProduct) {
                     return this.renderPriceSelection();
                 }
 
-                // Si no, mostrar lista de productos
                 return `
-                    <div class="question">¿Qué producto prefieres?</div>
+                    <div class="question">Selecciona tu producto</div>
                     ${filteredProducts.map((product, idx) => `
                         <div class="product-card ${this.data.selectedProduct?.id === product.id ? 'selected' : ''}"
                              onclick="app.selectProduct(${idx})">
-                            ${product.image ? `
-                                <div class="product-image-container">
-                                    <img src="${product.image}" alt="${product.name}" class="product-image">
-                                </div>
-                            ` : ''}
+                            ${product.image ? `<img src="${product.image}" class="product-image">` :
+                              '<div class="product-image" style="background:var(--gray-100);display:flex;align-items:center;justify-content:center;">📦</div>'}
                             <div class="product-info">
                                 <div class="product-name">${product.name}</div>
                             </div>
@@ -1334,46 +976,38 @@
                 const product = this.data.selectedProduct;
                 const prices = this.data.clientType === 'empresa' ? product.pricesEmpresa : product.pricesHogar;
                 const paymentOptions = [
-                    { key: 'unico', label: 'Pago Único', desc: 'Un solo pago' },
-                    { key: 'm12', label: '12 meses', desc: 'Financiación' },
-                    { key: 'm24', label: '24 meses', desc: 'Financiación' },
-                    { key: 'm36', label: '36 meses', desc: 'Financiación' },
-                    { key: 'm48', label: '48 meses', desc: 'Financiación' },
-                    { key: 'm60', label: '60 meses', desc: 'Financiación' }
+                    { key: 'unico', label: 'Único' },
+                    { key: 'm12', label: '12m' },
+                    { key: 'm24', label: '24m' },
+                    { key: 'm36', label: '36m' },
+                    { key: 'm48', label: '48m' },
+                    { key: 'm60', label: '60m' }
                 ];
 
-                const availableOptions = paymentOptions.filter(opt => prices[opt.key] && prices[opt.key] > 0);
+                const availableOptions = paymentOptions.filter(opt => prices && prices[opt.key] && prices[opt.key] > 0);
 
                 return `
-                    <div class="price-selection-container">
-                        <div class="question">Selecciona tu plan de pago</div>
-                        <div class="selected-product-preview">
-                            ${product.image ? `<img src="${product.image}" alt="${product.name}">` : ''}
-                            <div class="product-name">${product.name}</div>
-                            <button class="btn-change-product" onclick="app.changeProduct()">Cambiar</button>
-                        </div>
-                        <div class="price-options">
-                            ${availableOptions.map(opt => {
-                                const price = prices[opt.key];
-                                const finalPrice = this.data.clientType === 'empresa' ? price * 1.21 : price;
-                                const isMonthly = opt.key !== 'unico';
-                                return `
-                                    <div class="price-option ${this.data.selectedPayment === opt.key ? 'selected' : ''}"
-                                         onclick="app.selectPayment('${opt.key}')">
-                                        <div class="price-label">${opt.label}</div>
-                                        <div class="price-value">${finalPrice.toFixed(2)}€${isMonthly ? '/mes' : ''}</div>
-                                    </div>
-                                `;
-                            }).join('')}
-                        </div>
+                    <div class="question">Selecciona tu plan de pago</div>
+                    <div style="text-align:center;margin-bottom:20px;">
+                        <strong>${product.name}</strong>
+                        <button onclick="app.changeProduct()" style="margin-left:10px;padding:5px 12px;border:1px solid var(--gray-300);background:white;border-radius:6px;cursor:pointer;font-size:0.85em;">
+                            Cambiar
+                        </button>
+                    </div>
+                    <div class="price-options" style="max-width:500px;margin:0 auto;">
+                        ${availableOptions.map(opt => {
+                            const price = prices[opt.key];
+                            const finalPrice = this.data.clientType === 'empresa' ? price * 1.21 : price;
+                            return `
+                                <div class="price-option ${this.data.selectedPayment === opt.key ? 'selected' : ''}"
+                                     onclick="app.selectPayment('${opt.key}')">
+                                    <div class="price-label">${opt.label}</div>
+                                    <div class="price-value">${finalPrice.toFixed(2)}€</div>
+                                </div>
+                            `;
+                        }).join('')}
                     </div>
                 `;
-            },
-
-            changeProduct() {
-                this.data.selectedProduct = null;
-                this.data.selectedPayment = null;
-                this.renderStep();
             },
 
             renderStep5() {
@@ -1386,34 +1020,28 @@
                 if (extras.length === 0) {
                     return `
                         <div class="question">Extras adicionales</div>
-                        <p style="text-align:center;color:#666;padding:20px;">
-                            No hay extras disponibles para tu configuración.
-                        </p>
-                        <p style="text-align:center;color:#888;font-size:0.9em;">
-                            Puedes continuar al siguiente paso.
+                        <p style="text-align:center;color:var(--gray-500);">
+                            No hay extras disponibles. Puedes continuar.
                         </p>
                     `;
                 }
 
                 return `
                     <div class="question">¿Quieres añadir algún extra?</div>
-                    <p style="text-align:center;color:#666;margin-bottom:20px;font-size:0.9em;">
-                        Selecciona los extras que desees (opcional)
+                    <p style="text-align:center;color:var(--gray-500);margin-bottom:20px;font-size:0.9em;">
+                        Opcional - Selecciona los que desees
                     </p>
                     <div class="extras-grid">
                         ${extras.map((extra, idx) => {
                             const isSelected = this.data.selectedExtras.some(e => e.id === extra.id);
-                            const prices = this.data.clientType === 'empresa' ? extra.pricesEmpresa : extra.pricesHogar;
-                            const price = prices?.unico || prices?.m12 || 0;
-                            const finalPrice = this.data.clientType === 'empresa' ? price * 1.21 : price;
-
+                            const price = this.getExtraPrice(extra);
                             return `
                                 <div class="extra-card ${isSelected ? 'selected' : ''}"
                                      onclick="app.toggleExtra(${idx})">
-                                    <div class="extra-check">${isSelected ? '✓' : ''}</div>
-                                    ${extra.image ? `<img src="${extra.image}" alt="${extra.name}" class="extra-image">` : ''}
+                                    <div class="extra-check">✓</div>
+                                    ${extra.image ? `<img src="${extra.image}" class="extra-image">` : ''}
                                     <div class="extra-name">${extra.name}</div>
-                                    ${finalPrice > 0 ? `<div class="extra-price">+${finalPrice.toFixed(2)}€</div>` : ''}
+                                    ${price > 0 ? `<div class="extra-price">+${price.toFixed(2)}€</div>` : ''}
                                 </div>
                             `;
                         }).join('')}
@@ -1421,21 +1049,18 @@
                 `;
             },
 
-            toggleExtra(idx) {
-                const products = DB.get('products') || [];
-                const extras = products.filter(p =>
-                    p.isExtra &&
-                    (p.clientType === this.data.clientType || p.clientType === 'ambos' || !p.clientType)
-                );
-                const extra = extras[idx];
+            getExtraPrice(extra) {
+                const prices = this.data.clientType === 'empresa' ? extra.pricesEmpresa : extra.pricesHogar;
+                if (!prices) return 0;
 
-                const existingIdx = this.data.selectedExtras.findIndex(e => e.id === extra.id);
-                if (existingIdx >= 0) {
-                    this.data.selectedExtras.splice(existingIdx, 1);
-                } else {
-                    this.data.selectedExtras.push(extra);
+                // Usar el mismo plan de pago que el producto principal
+                const paymentKey = this.data.selectedPayment || 'unico';
+                let price = prices[paymentKey] || prices.unico || 0;
+
+                if (this.data.clientType === 'empresa') {
+                    price *= 1.21;
                 }
-                this.renderStep();
+                return price;
             },
 
             renderStep6() {
@@ -1444,364 +1069,83 @@
                 const productPrice = this.getProductPrice();
 
                 return `
-                    <div class="result-fullscreen">
-                        <!-- Ahorro Ecológico - Izquierda -->
-                        <div class="result-section eco-section">
-                            <div class="result-section-title">🌿 Ahorro Ecológico</div>
+                    <div class="result-page">
+                        <div class="result-column eco">
+                            <div class="result-title">🌿 Ahorro Ecológico</div>
                             <div class="eco-item">
-                                <div class="eco-icon">🧴</div>
                                 <div class="eco-value">${calc.bottlesSavedMonth}</div>
-                                <div class="eco-label">Botellas ahorradas<br>al mes</div>
+                                <div class="eco-label">Botellas/mes</div>
                             </div>
                             <div class="eco-item">
-                                <div class="eco-icon">♻️</div>
-                                <div class="eco-value">${calc.plasticSavedYear.toFixed(1)}</div>
-                                <div class="eco-label">Kg de plástico<br>ahorrado al año</div>
+                                <div class="eco-value">${calc.bottlesSavedYear}</div>
+                                <div class="eco-label">Botellas/año</div>
                             </div>
                             <div class="eco-item">
-                                <div class="eco-icon">🌍</div>
-                                <div class="eco-value">${calc.co2SavedYear.toFixed(1)}</div>
-                                <div class="eco-label">Kg de CO2<br>ahorrado al año</div>
+                                <div class="eco-value">${calc.plasticSavedYear.toFixed(1)} kg</div>
+                                <div class="eco-label">Plástico evitado/año</div>
+                            </div>
+                            <div class="eco-item">
+                                <div class="eco-value">${calc.co2SavedYear.toFixed(1)} kg</div>
+                                <div class="eco-label">CO2 evitado/año</div>
                             </div>
                         </div>
 
-                        <!-- Producto - Centro -->
-                        <div class="result-section product-section">
-                            <div class="result-section-title">📦 Tu Producto</div>
-                            ${this.data.selectedProduct?.image ?
-                                `<img src="${this.data.selectedProduct.image}" alt="${this.data.selectedProduct.name}" class="result-product-image">` : ''}
-                            <div class="result-product-name">${this.data.selectedProduct?.name || 'Producto'}</div>
-                            <div class="result-product-plan">${this.getPaymentLabel()}</div>
-
-                            <div class="result-price-box">
-                                <div class="result-price-label">${this.data.selectedPayment === 'unico' ? 'Precio total' : 'Cuota mensual'}</div>
-                                <div class="result-price-value">${productPrice.toFixed(2)}€</div>
-                            </div>
-
-                            ${this.data.selectedExtras.length > 0 ? `
-                                <div class="result-extras-list">
-                                    <h4>Extras incluidos:</h4>
-                                    <ul>
-                                        ${this.data.selectedExtras.map(e => `<li>${e.name}</li>`).join('')}
-                                    </ul>
+                        <div class="result-column product">
+                            <div class="result-title">📦 Tu Producto</div>
+                            <div class="result-product-section">
+                                ${this.data.selectedProduct?.image ?
+                                    `<img src="${this.data.selectedProduct.image}" class="result-product-image">` : ''}
+                                <div class="result-product-name">${this.data.selectedProduct?.name || 'Producto'}</div>
+                                <div class="result-product-plan">${this.getPaymentLabel()}</div>
+                                <div class="result-price-box">
+                                    <div class="label">${this.data.selectedPayment === 'unico' ? 'Precio total' : 'Cuota mensual'}</div>
+                                    <div class="value">${productPrice.toFixed(2)}€</div>
                                 </div>
-                            ` : ''}
+                                ${this.data.selectedExtras.length > 0 ? `
+                                    <div style="margin-top:15px;text-align:left;width:100%;">
+                                        <strong style="font-size:0.9em;">Extras incluidos:</strong>
+                                        <ul style="margin:5px 0 0 20px;font-size:0.85em;color:var(--gray-600);">
+                                            ${this.data.selectedExtras.map(e => `<li>${e.name}</li>`).join('')}
+                                        </ul>
+                                    </div>
+                                ` : ''}
+                            </div>
                         </div>
 
-                        <!-- Ahorro Económico - Derecha -->
-                        <div class="result-section economic-section">
-                            <div class="result-section-title">💰 Ahorro Económico</div>
+                        <div class="result-column economic">
+                            <div class="result-title">💰 Ahorro Económico</div>
                             <div class="economic-item">
-                                <span class="economic-label">Consumo actual</span>
-                                <span class="economic-value current">${calc.currentCost.toFixed(2)}€/mes</span>
+                                <span class="economic-label">Gasto actual</span>
+                                <span class="economic-value" style="color:var(--danger)">${calc.currentCost.toFixed(2)}€/mes</span>
                             </div>
                             <div class="economic-item">
                                 <span class="economic-label">Litros/mes</span>
                                 <span class="economic-value">${calc.litersPerMonth}L</span>
                             </div>
-                            ${this.data.currentService === 'aquaservice' ? `
-                            <div class="economic-item">
-                                <span class="economic-label">Botellones/mes</span>
-                                <span class="economic-value">${calc.aquaserviceBottles}</span>
-                            </div>
-                            ` : ''}
                             <div class="economic-item">
                                 <span class="economic-label">Con Aquaroo</span>
-                                <span class="economic-value new">${calc.newCost.toFixed(2)}€/mes</span>
+                                <span class="economic-value" style="color:var(--success)">${calc.newCost.toFixed(2)}€/mes</span>
+                            </div>
+                            <div class="economic-item highlight">
+                                <span class="economic-label">Ahorro mensual</span>
+                                <span class="economic-value">${calc.monthlySavings.toFixed(2)}€</span>
                             </div>
                             <div class="economic-item highlight">
                                 <span class="economic-label">Ahorro anual</span>
                                 <span class="economic-value">${calc.annualSavings.toFixed(2)}€</span>
                             </div>
-                            <div class="economic-item highlight">
-                                <span class="economic-label">Ahorro 5 años</span>
-                                <span class="economic-value">${(calc.annualSavings * 5).toFixed(2)}€</span>
-                            </div>
                         </div>
 
-                        <!-- Condiciones - Abajo -->
                         <div class="result-conditions">
-                            <h4>📋 Condiciones</h4>
-                            <p>${config.salesConditions || 'Consulta las condiciones de venta con tu comercial.'}</p>
-                            <p style="margin-top:8px;">${config.warrantyConditions || 'Garantía incluida según producto.'}</p>
+                            <strong>📋 Condiciones:</strong> ${config.salesConditions || ''} ${config.warrantyConditions || ''}
                         </div>
 
-                        <!-- Acciones -->
                         <div class="result-actions">
-                            <button class="btn btn-primary" onclick="app.generateQuote()">
-                                📄 Descargar PDF
-                            </button>
-                            <button class="btn btn-secondary" onclick="app.startOver()">
-                                🔄 Nueva Consulta
-                            </button>
+                            <button class="btn btn-primary" onclick="app.generateQuote()">📄 Descargar PDF</button>
+                            <button class="btn btn-secondary" onclick="app.startOver()">🔄 Nueva Consulta</button>
                         </div>
                     </div>
                 `;
-            },
-
-            getPaymentLabel() {
-                const labels = {
-                    'unico': 'Pago Único',
-                    'm12': '12 meses',
-                    'm24': '24 meses',
-                    'm36': '36 meses',
-                    'm48': '48 meses',
-                    'm60': '60 meses'
-                };
-                return labels[this.data.selectedPayment] || 'No seleccionado';
-            },
-
-            getProductPrice() {
-                if (!this.data.selectedProduct || !this.data.selectedPayment) return 0;
-
-                const prices = this.data.clientType === 'empresa'
-                    ? this.data.selectedProduct.pricesEmpresa
-                    : this.data.selectedProduct.pricesHogar;
-
-                let price = prices[this.data.selectedPayment] || 0;
-                if (this.data.clientType === 'empresa') {
-                    price *= 1.21; // IVA
-                }
-                return price;
-            },
-
-            calculateSavings() {
-                let currentCost = 0;
-                let newCost = 0;
-
-                // Calcular consumo
-                const numPeople = this.getNumPeople();
-                const litersPerPerson = 2; // Litros por persona al día
-                const daysPerMonth = 30;
-                const litersPerMonth = Math.round(numPeople * litersPerPerson * daysPerMonth);
-                const litersPerYear = litersPerMonth * 12;
-
-                // Variables para cálculos ecológicos
-                let bottlesSavedMonth = 0;
-                let plasticSavedYear = 0;
-                let co2SavedYear = 0;
-                let aquaserviceBottles = 0;
-
-                // Obtener precios de aquaservice según tipo de cliente
-                const aquaPrices = DB.get('aquaservicePrices') || {};
-                const aquaPricesHogar = aquaPrices.hogar || aquaPrices;
-                const aquaPricesEmpresa = aquaPrices.empresa || aquaPrices;
-                const activeAquaPrices = this.data.clientType === 'empresa' ? aquaPricesEmpresa : aquaPricesHogar;
-
-                switch(this.data.currentService) {
-                    case 'bottled':
-                        const brands = DB.get('waterBrands') || [];
-                        const avgPrice = brands.length > 0
-                            ? brands.reduce((sum, b) => sum + b.pricePerLiter, 0) / brands.length
-                            : 0.30;
-                        currentCost = litersPerMonth * avgPrice;
-
-                        // Cálculos ecológicos (botellas de 1.5L)
-                        bottlesSavedMonth = Math.round(litersPerMonth / 1.5);
-                        plasticSavedYear = (bottlesSavedMonth * 12 * 0.035); // 35g por botella
-                        co2SavedYear = (bottlesSavedMonth * 12 * 0.082); // 82g CO2 por botella
-                        break;
-
-                    case 'aquaservice':
-                        aquaserviceBottles = Math.ceil(litersPerMonth / 18.9); // Botellones de 18.9L
-                        const bottleKey = Math.min(Math.max(aquaserviceBottles, 2), 8);
-                        currentCost = (activeAquaPrices[bottleKey] || 29.90) * (30/28);
-
-                        // Cálculos ecológicos (botellones reutilizables pero con huella)
-                        bottlesSavedMonth = aquaserviceBottles;
-                        plasticSavedYear = (aquaserviceBottles * 12 * 0.5); // Estimación
-                        co2SavedYear = (aquaserviceBottles * 12 * 0.3); // Transporte
-                        break;
-
-                    case 'tap':
-                        currentCost = litersPerMonth * 0.002;
-                        bottlesSavedMonth = 0;
-                        plasticSavedYear = 0;
-                        co2SavedYear = 0;
-                        break;
-
-                    case 'osmosis':
-                        currentCost = 25; // Mantenimiento osmosis
-                        bottlesSavedMonth = Math.round(litersPerMonth / 1.5);
-                        plasticSavedYear = 0;
-                        co2SavedYear = 0;
-                        break;
-                }
-
-                // Calcular nuevo coste
-                if (this.data.selectedProduct && this.data.selectedPayment) {
-                    const prices = this.data.clientType === 'empresa'
-                        ? this.data.selectedProduct.pricesEmpresa
-                        : this.data.selectedProduct.pricesHogar;
-
-                    let productPrice = prices[this.data.selectedPayment] || 0;
-                    if (this.data.clientType === 'empresa') {
-                        productPrice *= 1.21;
-                    }
-
-                    if (this.data.selectedPayment === 'unico') {
-                        newCost = productPrice / 60; // Amortización 5 años
-                    } else {
-                        newCost = productPrice;
-                    }
-
-                    // Añadir extras
-                    this.data.selectedExtras.forEach(extra => {
-                        const extraPrices = this.data.clientType === 'empresa'
-                            ? extra.pricesEmpresa
-                            : extra.pricesHogar;
-                        let extraPrice = extraPrices?.unico || extraPrices?.m12 || 0;
-                        if (this.data.clientType === 'empresa') {
-                            extraPrice *= 1.21;
-                        }
-                        newCost += extraPrice / 60;
-                    });
-                }
-
-                const monthlySavings = Math.max(0, currentCost - newCost);
-                const annualSavings = monthlySavings * 12;
-
-                return {
-                    currentCost,
-                    newCost,
-                    monthlySavings,
-                    annualSavings,
-                    litersPerMonth,
-                    litersPerYear,
-                    bottlesSavedMonth,
-                    plasticSavedYear,
-                    co2SavedYear,
-                    aquaserviceBottles
-                };
-            },
-
-            getNumPeople() {
-                const val = this.data.numberOfPeople;
-                if (!val) return 2;
-                if (val === '+6' || val === '+15') return 10;
-                if (val.includes('-')) {
-                    const parts = val.split('-');
-                    return (parseInt(parts[0]) + parseInt(parts[1])) / 2;
-                }
-                return parseInt(val) || 2;
-            },
-
-            generateQuote() {
-                const calc = this.calculateSavings();
-                const config = DB.get('config') || {};
-                const productPrice = this.getProductPrice();
-
-                const { jsPDF } = window.jspdf;
-                const doc = new jsPDF();
-
-                // Header
-                doc.setFillColor(37, 99, 235);
-                doc.rect(0, 0, 210, 40, 'F');
-                doc.setTextColor(255, 255, 255);
-                doc.setFontSize(24);
-                doc.text('Presupuesto Aquaroo', 105, 25, { align: 'center' });
-
-                // Fecha
-                doc.setFontSize(10);
-                doc.text(new Date().toLocaleDateString('es-ES'), 190, 10, { align: 'right' });
-
-                // Reset color
-                doc.setTextColor(0, 0, 0);
-
-                // Información del cliente
-                doc.setFontSize(14);
-                doc.text('Datos del presupuesto', 20, 55);
-                doc.setFontSize(10);
-                doc.text(`Tipo: ${this.data.clientType === 'empresa' ? 'Empresa' : 'Hogar'}`, 20, 65);
-                doc.text(`Personas: ${this.data.numberOfPeople}`, 20, 72);
-                doc.text(`Servicio actual: ${this.getServiceName()}`, 20, 79);
-
-                // Producto
-                doc.setFontSize(14);
-                doc.text('Producto seleccionado', 20, 95);
-                doc.setFontSize(12);
-                doc.setTextColor(37, 99, 235);
-                doc.text(this.data.selectedProduct?.name || 'Producto', 20, 105);
-                doc.setTextColor(0, 0, 0);
-                doc.setFontSize(10);
-                doc.text(`Plan: ${this.getPaymentLabel()}`, 20, 112);
-                doc.text(`Precio: ${productPrice.toFixed(2)}€${this.data.selectedPayment !== 'unico' ? '/mes' : ''}`, 20, 119);
-
-                // Extras
-                if (this.data.selectedExtras.length > 0) {
-                    doc.text('Extras incluidos:', 20, 130);
-                    this.data.selectedExtras.forEach((e, i) => {
-                        doc.text(`  - ${e.name}`, 20, 137 + (i * 7));
-                    });
-                }
-
-                // Ahorro económico
-                let yPos = 155 + (this.data.selectedExtras.length * 7);
-                doc.setFontSize(14);
-                doc.text('Ahorro económico', 20, yPos);
-                yPos += 10;
-                doc.setFontSize(10);
-                doc.text(`Consumo actual: ${calc.currentCost.toFixed(2)}€/mes`, 20, yPos);
-                yPos += 7;
-                doc.text(`Con Aquaroo: ${calc.newCost.toFixed(2)}€/mes`, 20, yPos);
-                yPos += 7;
-                doc.setTextColor(37, 99, 235);
-                doc.setFontSize(12);
-                doc.text(`Ahorro anual: ${calc.annualSavings.toFixed(2)}€`, 20, yPos);
-                doc.text(`Ahorro 5 años: ${(calc.annualSavings * 5).toFixed(2)}€`, 20, yPos + 8);
-
-                // Ahorro ecológico
-                doc.setTextColor(0, 128, 0);
-                yPos += 25;
-                doc.setFontSize(14);
-                doc.text('Ahorro ecológico anual', 20, yPos);
-                doc.setFontSize(10);
-                yPos += 10;
-                doc.text(`Botellas ahorradas: ${calc.bottlesSavedMonth * 12}`, 20, yPos);
-                doc.text(`Plástico evitado: ${calc.plasticSavedYear.toFixed(1)} kg`, 20, yPos + 7);
-                doc.text(`CO2 evitado: ${calc.co2SavedYear.toFixed(1)} kg`, 20, yPos + 14);
-
-                // Condiciones
-                doc.setTextColor(100, 100, 100);
-                doc.setFontSize(8);
-                const condY = 260;
-                doc.text('Condiciones:', 20, condY);
-                const salesText = doc.splitTextToSize(config.salesConditions || 'Consulte condiciones con su comercial.', 170);
-                doc.text(salesText, 20, condY + 5);
-
-                // Footer
-                doc.setFillColor(37, 99, 235);
-                doc.rect(0, 287, 210, 10, 'F');
-
-                // Guardar
-                doc.save(`Presupuesto_Aquaroo_${new Date().toISOString().slice(0,10)}.pdf`);
-            },
-
-            getServiceName() {
-                const names = {
-                    'bottled': 'Agua Embotellada',
-                    'aquaservice': 'Aquaservice',
-                    'tap': 'Agua del Grifo',
-                    'osmosis': 'Osmosis'
-                };
-                return names[this.data.currentService] || 'No especificado';
-            },
-
-            startOver() {
-                this.currentStep = 1;
-                this.data = {
-                    clientType: null,
-                    numberOfPeople: null,
-                    currentService: null,
-                    currentServiceDetails: {},
-                    selectedProduct: null,
-                    selectedPayment: null,
-                    selectedExtras: [],
-                    selectedDouble: null,
-                    installation: 0,
-                    maintenanceIncluded: true
-                };
-                this.renderStep();
             },
 
             // Actions
@@ -1817,7 +1161,28 @@
 
             selectCurrentService(service) {
                 this.data.currentService = service;
+                if (service === 'tap') {
+                    this.data.litersPerPersonDay = 0;
+                }
                 this.renderStep();
+            },
+
+            updateLitersPerPerson(value) {
+                this.data.litersPerPersonDay = parseFloat(value) || 2;
+            },
+
+            selectWaterBrand(brand) {
+                this.data.waterBrand = brand;
+                this.renderStep();
+            },
+
+            selectAquaserviceBottles(num) {
+                this.data.aquaserviceBottles = num;
+                this.renderStep();
+            },
+
+            updateOsmosisCost(value) {
+                this.data.osmosisMonthlyCost = parseFloat(value) || 0;
             },
 
             selectProduct(idx) {
@@ -1825,10 +1190,15 @@
                 const filteredProducts = products.filter(p =>
                     (p.clientType === this.data.clientType || p.clientType === 'ambos') &&
                     !p.isExtra &&
-                    !p.isDouble &&
-                    (!p.peopleRange || this.matchesPeopleRange(p.peopleRange))
+                    !p.isDouble
                 );
                 this.data.selectedProduct = filteredProducts[idx];
+                this.data.selectedPayment = null;
+                this.renderStep();
+            },
+
+            changeProduct() {
+                this.data.selectedProduct = null;
                 this.data.selectedPayment = null;
                 this.renderStep();
             },
@@ -1838,16 +1208,154 @@
                 this.renderStep();
             },
 
-            matchesPeopleRange(range) {
-                if (!range || this.data.clientType !== 'empresa') return true;
-                return this.data.numberOfPeople === range;
+            toggleExtra(idx) {
+                const products = DB.get('products') || [];
+                const extras = products.filter(p =>
+                    p.isExtra &&
+                    (p.clientType === this.data.clientType || p.clientType === 'ambos' || !p.clientType)
+                );
+                const extra = extras[idx];
+                const existingIdx = this.data.selectedExtras.findIndex(e => e.id === extra.id);
+                if (existingIdx >= 0) {
+                    this.data.selectedExtras.splice(existingIdx, 1);
+                } else {
+                    this.data.selectedExtras.push(extra);
+                }
+                this.renderStep();
+            },
+
+            getPaymentLabel() {
+                const labels = {
+                    'unico': 'Pago Único',
+                    'm12': '12 meses',
+                    'm24': '24 meses',
+                    'm36': '36 meses',
+                    'm48': '48 meses',
+                    'm60': '60 meses'
+                };
+                return labels[this.data.selectedPayment] || '';
+            },
+
+            getProductPrice() {
+                if (!this.data.selectedProduct || !this.data.selectedPayment) return 0;
+                const prices = this.data.clientType === 'empresa'
+                    ? this.data.selectedProduct.pricesEmpresa
+                    : this.data.selectedProduct.pricesHogar;
+                let price = prices?.[this.data.selectedPayment] || 0;
+                if (this.data.clientType === 'empresa') price *= 1.21;
+                return price;
+            },
+
+            getNumPeople() {
+                const val = this.data.numberOfPeople;
+                if (!val) return 2;
+                if (val === '+6') return 6;
+                if (val === '+15') return 20;
+                if (val.includes('-')) {
+                    const parts = val.split('-');
+                    return (parseInt(parts[0]) + parseInt(parts[1])) / 2;
+                }
+                return parseInt(val) || 2;
+            },
+
+            calculateSavings() {
+                const numPeople = this.getNumPeople();
+                const litersPerDay = this.data.litersPerPersonDay || 2;
+                const litersPerMonth = Math.round(numPeople * litersPerDay * 30);
+                const litersPerYear = litersPerMonth * 12;
+
+                let currentCost = 0;
+                let bottlesSavedMonth = 0;
+
+                const aquaPrices = DB.get('aquaservicePrices') || {};
+                const aquaPricesType = this.data.clientType === 'empresa' ? aquaPrices.empresa : aquaPrices.hogar;
+
+                switch(this.data.currentService) {
+                    case 'bottled':
+                        const brands = DB.get('waterBrands') || [];
+                        const selectedBrand = brands.find(b => b.name === this.data.waterBrand);
+                        const pricePerLiter = selectedBrand ? selectedBrand.pricePerLiter : 0.35;
+                        currentCost = litersPerMonth * pricePerLiter;
+                        bottlesSavedMonth = Math.round(litersPerMonth / 1.5);
+                        break;
+
+                    case 'aquaservice':
+                        const bottles = this.data.aquaserviceBottles || 4;
+                        // Aquaservice: precio por reparto (cada 4 semanas = 13 veces al año)
+                        const pricePerDelivery = aquaPricesType?.[bottles] || 39.90;
+                        currentCost = (pricePerDelivery * 13) / 12;
+                        // Garrafas de 18.9L
+                        bottlesSavedMonth = Math.round((bottles * 18.9) / 1.5);
+                        break;
+
+                    case 'tap':
+                        currentCost = 0;
+                        bottlesSavedMonth = 0;
+                        break;
+
+                    case 'osmosis':
+                        currentCost = this.data.osmosisMonthlyCost || 0;
+                        bottlesSavedMonth = Math.round(litersPerMonth / 1.5);
+                        break;
+                }
+
+                const bottlesSavedYear = bottlesSavedMonth * 12;
+                const plasticSavedYear = bottlesSavedYear * 0.035; // 35g por botella
+                const co2SavedYear = bottlesSavedYear * 0.082; // 82g CO2 por botella
+
+                // Calcular nuevo coste
+                let newCost = 0;
+                if (this.data.selectedProduct && this.data.selectedPayment) {
+                    const prices = this.data.clientType === 'empresa'
+                        ? this.data.selectedProduct.pricesEmpresa
+                        : this.data.selectedProduct.pricesHogar;
+
+                    let productPrice = prices?.[this.data.selectedPayment] || 0;
+                    if (this.data.clientType === 'empresa') productPrice *= 1.21;
+
+                    if (this.data.selectedPayment === 'unico') {
+                        newCost = productPrice / 60;
+                    } else {
+                        newCost = productPrice;
+                    }
+
+                    // Extras
+                    this.data.selectedExtras.forEach(extra => {
+                        const extraPrice = this.getExtraPrice(extra);
+                        if (this.data.selectedPayment === 'unico') {
+                            newCost += extraPrice / 60;
+                        } else {
+                            newCost += extraPrice;
+                        }
+                    });
+                }
+
+                const monthlySavings = Math.max(0, currentCost - newCost);
+                const annualSavings = monthlySavings * 12;
+
+                return {
+                    currentCost,
+                    newCost,
+                    monthlySavings,
+                    annualSavings,
+                    litersPerMonth,
+                    litersPerYear,
+                    bottlesSavedMonth,
+                    bottlesSavedYear,
+                    plasticSavedYear,
+                    co2SavedYear
+                };
             },
 
             canProceed() {
                 switch(this.currentStep) {
                     case 1: return this.data.clientType !== null;
                     case 2: return this.data.numberOfPeople !== null;
-                    case 3: return this.data.currentService !== null;
+                    case 3:
+                        if (!this.data.currentService) return false;
+                        if (this.data.currentService === 'bottled' && !this.data.waterBrand) return false;
+                        if (this.data.currentService === 'aquaservice' && !this.data.aquaserviceBottles) return false;
+                        return true;
                     case 4: return this.data.selectedProduct && this.data.selectedPayment;
                     default: return true;
                 }
@@ -1862,9 +1370,97 @@
 
             previousStep() {
                 if (this.currentStep > 1) {
+                    if (this.currentStep === 4 && this.data.selectedProduct && !this.data.selectedPayment) {
+                        this.data.selectedProduct = null;
+                    }
                     this.currentStep--;
                     this.renderStep();
                 }
+            },
+
+            startOver() {
+                this.currentStep = 1;
+                this.data = {
+                    clientType: null,
+                    numberOfPeople: null,
+                    currentService: null,
+                    litersPerPersonDay: 2,
+                    waterBrand: null,
+                    aquaserviceBottles: null,
+                    osmosisMonthlyCost: 0,
+                    selectedProduct: null,
+                    selectedPayment: null,
+                    selectedExtras: [],
+                };
+                this.renderStep();
+            },
+
+            generateQuote() {
+                const calc = this.calculateSavings();
+                const config = DB.get('config') || {};
+                const productPrice = this.getProductPrice();
+
+                const { jsPDF } = window.jspdf;
+                const doc = new jsPDF();
+
+                // Header
+                doc.setFillColor(0, 102, 204);
+                doc.rect(0, 0, 210, 35, 'F');
+                doc.setTextColor(255, 255, 255);
+                doc.setFontSize(22);
+                doc.text('Presupuesto Aquaroo', 105, 22, { align: 'center' });
+
+                doc.setFontSize(10);
+                doc.text(new Date().toLocaleDateString('es-ES'), 190, 10, { align: 'right' });
+
+                doc.setTextColor(0, 0, 0);
+
+                // Info
+                doc.setFontSize(12);
+                doc.text('Datos del cliente', 20, 50);
+                doc.setFontSize(10);
+                doc.text(`Tipo: ${this.data.clientType === 'empresa' ? 'Empresa' : 'Hogar'}`, 20, 58);
+                doc.text(`Personas: ${this.data.numberOfPeople}`, 20, 65);
+
+                // Producto
+                doc.setFontSize(12);
+                doc.text('Producto', 20, 80);
+                doc.setFontSize(10);
+                doc.setTextColor(0, 102, 204);
+                doc.text(this.data.selectedProduct?.name || '', 20, 88);
+                doc.setTextColor(0, 0, 0);
+                doc.text(`Plan: ${this.getPaymentLabel()} - ${productPrice.toFixed(2)}€`, 20, 95);
+
+                // Ahorro
+                doc.setFontSize(12);
+                doc.text('Ahorro Económico', 20, 115);
+                doc.setFontSize(10);
+                doc.text(`Gasto actual: ${calc.currentCost.toFixed(2)}€/mes`, 20, 123);
+                doc.text(`Con Aquaroo: ${calc.newCost.toFixed(2)}€/mes`, 20, 130);
+                doc.setTextColor(0, 102, 204);
+                doc.text(`Ahorro anual: ${calc.annualSavings.toFixed(2)}€`, 20, 140);
+
+                // Ecológico
+                doc.setTextColor(0, 128, 0);
+                doc.setFontSize(12);
+                doc.text('Ahorro Ecológico', 20, 160);
+                doc.setFontSize(10);
+                doc.text(`Botellas ahorradas/año: ${calc.bottlesSavedYear}`, 20, 168);
+                doc.text(`Plástico evitado: ${calc.plasticSavedYear.toFixed(1)} kg/año`, 20, 175);
+                doc.text(`CO2 evitado: ${calc.co2SavedYear.toFixed(1)} kg/año`, 20, 182);
+
+                // Condiciones
+                doc.setTextColor(100, 100, 100);
+                doc.setFontSize(8);
+                doc.text('Condiciones:', 20, 250);
+                const condText = doc.splitTextToSize(`${config.salesConditions || ''} ${config.warrantyConditions || ''}`, 170);
+                doc.text(condText, 20, 257);
+
+                // Footer
+                doc.setFillColor(0, 102, 204);
+                doc.rect(0, 287, 210, 10, 'F');
+
+                doc.save(`Presupuesto_Aquaroo_${new Date().toISOString().slice(0,10)}.pdf`);
             }
         };
 
