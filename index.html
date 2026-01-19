@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="theme-color" content="#667eea">
+    <meta name="theme-color" content="#2563eb">
     <title>💧 Calculadora de Ahorro</title>
     <style>
         * {
@@ -13,23 +13,24 @@
         }
 
         :root {
-            --primary: #667eea;
-            --secondary: #764ba2;
-            --accent: #f093fb;
-            --success: #4facfe;
+            --primary: #2563eb;
+            --secondary: #1e40af;
+            --accent: #3b82f6;
+            --success: #0ea5e9;
+            --light-blue: #60a5fa;
             --glass-bg: rgba(255, 255, 255, 0.1);
             --glass-border: rgba(255, 255, 255, 0.18);
         }
 
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #2563eb 0%, #1e40af 100%);
             min-height: 100vh;
             display: flex;
             align-items: center;
             justify-content: center;
             padding: 20px;
-            overflow: hidden;
+            overflow-x: hidden;
         }
 
         .container {
@@ -245,50 +246,94 @@
             color: var(--primary);
         }
 
-        /* Product Cards */
+        /* Product Cards - Compact Layout */
         .product-card {
             background: white;
             border: 3px solid #eee;
             border-radius: 20px;
-            padding: 25px;
+            padding: 20px;
             cursor: pointer;
             transition: all 0.3s;
-            margin-bottom: 20px;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 20px;
         }
 
         .product-card:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.12);
             border-color: var(--primary);
         }
 
         .product-card.selected {
             border-color: var(--primary);
-            background: linear-gradient(135deg, rgba(102,126,234,0.05), rgba(118,75,162,0.05));
-            box-shadow: 0 15px 35px rgba(102,126,234,0.3);
+            background: linear-gradient(135deg, rgba(37,99,235,0.05), rgba(30,64,175,0.05));
+            box-shadow: 0 10px 25px rgba(37,99,235,0.25);
         }
 
-        .product-name {
-            font-size: 1.5em;
-            font-weight: 700;
-            color: #333;
-            margin-bottom: 15px;
+        .product-image-container {
+            flex-shrink: 0;
         }
 
         .product-image {
-            width: 100%;
-            max-width: 200px;
-            height: auto;
-            border-radius: 15px;
-            margin: 15px auto;
+            width: 100px;
+            height: 100px;
+            object-fit: contain;
+            border-radius: 12px;
             display: block;
+        }
+
+        .product-info {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .product-name {
+            font-size: 1.2em;
+            font-weight: 700;
+            color: #333;
+            margin-bottom: 5px;
+        }
+
+        .product-card.selected .product-name {
+            color: var(--primary);
+        }
+
+        /* Price Selection Step */
+        .price-selection-container {
+            text-align: center;
+        }
+
+        .selected-product-preview {
+            background: white;
+            border-radius: 20px;
+            padding: 20px;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 20px;
+            border: 2px solid var(--primary);
+        }
+
+        .selected-product-preview img {
+            width: 80px;
+            height: 80px;
+            object-fit: contain;
+            border-radius: 10px;
+        }
+
+        .selected-product-preview .product-name {
+            margin: 0;
+            color: var(--primary);
         }
 
         .price-options {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-            gap: 10px;
-            margin-top: 20px;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+            margin-top: 15px;
         }
 
         .price-option {
@@ -305,14 +350,327 @@
         .price-option:hover {
             background: white;
             border-color: var(--primary);
-            transform: scale(1.05);
+            transform: scale(1.03);
         }
 
         .price-option.selected {
             background: linear-gradient(135deg, var(--primary), var(--secondary));
             color: white;
             border-color: var(--primary);
-            box-shadow: 0 5px 15px rgba(102,126,234,0.4);
+            box-shadow: 0 5px 15px rgba(37,99,235,0.35);
+        }
+
+        .price-option .price-label {
+            font-size: 0.85em;
+            opacity: 0.8;
+            margin-bottom: 3px;
+        }
+
+        .price-option .price-value {
+            font-size: 1.1em;
+            font-weight: 700;
+        }
+
+        /* Responsive for products */
+        @media (max-width: 768px) {
+            .product-card {
+                flex-direction: column;
+                text-align: center;
+                padding: 15px;
+            }
+
+            .product-image {
+                width: 80px;
+                height: 80px;
+            }
+
+            .product-name {
+                font-size: 1em;
+            }
+
+            .price-options {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 8px;
+            }
+
+            .price-option {
+                padding: 12px 8px;
+            }
+
+            .price-option .price-label {
+                font-size: 0.75em;
+            }
+
+            .price-option .price-value {
+                font-size: 0.95em;
+            }
+
+            .selected-product-preview {
+                flex-direction: column;
+                padding: 15px;
+            }
+
+            .selected-product-preview img {
+                width: 60px;
+                height: 60px;
+            }
+        }
+
+        @media (max-width: 380px) {
+            .price-options {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        /* Change Product Button */
+        .btn-change-product {
+            background: transparent;
+            border: 1px solid var(--primary);
+            color: var(--primary);
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 0.8em;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .btn-change-product:hover {
+            background: var(--primary);
+            color: white;
+        }
+
+        /* Extras Grid */
+        .extras-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+        }
+
+        .extra-card {
+            background: white;
+            border: 2px solid #e0e0e0;
+            border-radius: 15px;
+            padding: 15px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            position: relative;
+        }
+
+        .extra-card:hover {
+            border-color: var(--primary);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .extra-card.selected {
+            border-color: var(--primary);
+            background: linear-gradient(135deg, rgba(37,99,235,0.05), rgba(30,64,175,0.05));
+        }
+
+        .extra-check {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background: var(--primary);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8em;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .extra-card.selected .extra-check {
+            opacity: 1;
+        }
+
+        .extra-image {
+            width: 60px;
+            height: 60px;
+            object-fit: contain;
+            margin-bottom: 10px;
+        }
+
+        .extra-name {
+            font-weight: 600;
+            color: #333;
+            font-size: 0.95em;
+            margin-bottom: 5px;
+        }
+
+        .extra-price {
+            color: var(--primary);
+            font-weight: 700;
+            font-size: 0.9em;
+        }
+
+        /* Result Styles */
+        .result-container {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .result-summary {
+            background: white;
+            border-radius: 20px;
+            padding: 25px;
+            margin-bottom: 20px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+        }
+
+        .result-product {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #eee;
+            margin-bottom: 20px;
+        }
+
+        .result-product-image {
+            width: 60px;
+            height: 60px;
+            object-fit: contain;
+            border-radius: 10px;
+        }
+
+        .result-product-info h3 {
+            margin: 0;
+            color: var(--primary);
+            font-size: 1.1em;
+        }
+
+        .result-product-info p {
+            margin: 5px 0 0;
+            color: #666;
+            font-size: 0.9em;
+        }
+
+        .result-numbers {
+            display: grid;
+            gap: 12px;
+        }
+
+        .result-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 15px;
+            background: #f8f9fa;
+            border-radius: 10px;
+        }
+
+        .result-item.savings {
+            background: linear-gradient(135deg, rgba(37,99,235,0.1), rgba(30,64,175,0.1));
+        }
+
+        .result-item.annual {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+        }
+
+        .result-label {
+            font-size: 0.9em;
+        }
+
+        .result-value {
+            font-weight: 700;
+            font-size: 1.1em;
+        }
+
+        .result-value.current {
+            color: #dc3545;
+        }
+
+        .result-value.new {
+            color: var(--primary);
+        }
+
+        .result-value.highlight {
+            font-size: 1.3em;
+        }
+
+        .result-extras {
+            margin-top: 20px;
+            padding-top: 15px;
+            border-top: 1px solid #eee;
+        }
+
+        .result-extras h4 {
+            margin: 0 0 10px;
+            color: #333;
+            font-size: 0.95em;
+        }
+
+        .result-extras ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .result-extras li {
+            padding: 5px 0;
+            color: #666;
+            font-size: 0.9em;
+        }
+
+        .result-extras li::before {
+            content: "✓ ";
+            color: var(--primary);
+        }
+
+        .result-actions {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .result-actions .btn {
+            flex: 1;
+            min-width: 150px;
+        }
+
+        /* Responsive for extras and results */
+        @media (max-width: 768px) {
+            .extras-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 10px;
+            }
+
+            .extra-card {
+                padding: 12px;
+            }
+
+            .extra-image {
+                width: 50px;
+                height: 50px;
+            }
+
+            .extra-name {
+                font-size: 0.85em;
+            }
+
+            .result-summary {
+                padding: 20px;
+            }
+
+            .result-product {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .result-item {
+                padding: 8px 12px;
+            }
+
+            .result-actions {
+                flex-direction: column;
+            }
         }
 
         /* Buttons */
@@ -369,47 +727,195 @@
             border: none;
             font-size: 1.5em;
             cursor: pointer;
-            box-shadow: 0 8px 20px rgba(102,126,234,0.4);
+            box-shadow: 0 8px 20px rgba(37,99,235,0.4);
             transition: all 0.3s;
             z-index: 1000;
         }
 
         .admin-btn:hover {
             transform: scale(1.1) rotate(90deg);
-            box-shadow: 0 12px 30px rgba(102,126,234,0.6);
+            box-shadow: 0 12px 30px rgba(37,99,235,0.6);
         }
 
-        /* Responsive */
         @media (max-width: 768px) {
+            .admin-btn {
+                bottom: 20px;
+                right: 20px;
+                width: 50px;
+                height: 50px;
+                font-size: 1.2em;
+            }
+        }
+
+        /* Responsive - Tablet */
+        @media (max-width: 1024px) {
             .container {
                 height: auto;
                 min-height: 90vh;
             }
 
             .card {
-                padding: 25px;
+                padding: 30px;
             }
 
             .header h1 {
-                font-size: 1.8em;
+                font-size: 2em;
+            }
+
+            .question {
+                font-size: 1.5em;
             }
 
             .options-grid {
-                grid-template-columns: 1fr;
+                grid-template-columns: repeat(2, 1fr);
+                gap: 15px;
+            }
+
+            .option-card {
+                padding: 20px;
+            }
+
+            .option-icon {
+                font-size: 2.5em;
+            }
+
+            .option-label {
+                font-size: 1.1em;
+            }
+        }
+
+        /* Responsive - Mobile */
+        @media (max-width: 768px) {
+            body {
+                padding: 10px;
+            }
+
+            .container {
+                height: auto;
+                min-height: 95vh;
+            }
+
+            .card {
+                padding: 20px;
+                border-radius: 20px;
+            }
+
+            .header {
+                margin-bottom: 15px;
+            }
+
+            .header h1 {
+                font-size: 1.5em;
+            }
+
+            .header p {
+                font-size: 0.9em;
+            }
+
+            .steps {
+                margin-bottom: 20px;
+                padding: 0 5px;
+            }
+
+            .steps::before {
+                top: 20px;
+                left: 5%;
+                right: 5%;
+            }
+
+            .step-circle {
+                width: 35px;
+                height: 35px;
+                font-size: 0.9em;
+            }
+
+            .step.active .step-circle {
+                transform: scale(1.1);
+            }
+
+            .step-label {
+                font-size: 0.65em;
+                margin-top: 5px;
+                max-width: 60px;
+                word-wrap: break-word;
+                line-height: 1.2;
+            }
+
+            .question {
+                font-size: 1.3em;
+                margin-bottom: 20px;
+            }
+
+            .options-grid {
+                grid-template-columns: 1fr 1fr;
+                gap: 10px;
+            }
+
+            .option-card {
+                padding: 15px 10px;
+                border-radius: 15px;
+                min-height: auto;
+            }
+
+            .option-icon {
+                font-size: 2em;
+                margin-bottom: 8px;
+            }
+
+            .option-label {
+                font-size: 0.95em;
+                line-height: 1.2;
+                word-wrap: break-word;
             }
 
             .buttons {
                 flex-direction: column;
+                gap: 10px;
+                padding-top: 15px;
+            }
+
+            .btn {
+                padding: 12px 20px;
+                font-size: 1em;
+            }
+        }
+
+        /* Very small screens */
+        @media (max-width: 380px) {
+            .header h1 {
+                font-size: 1.3em;
             }
 
             .step-circle {
-                width: 40px;
-                height: 40px;
-                font-size: 1em;
+                width: 30px;
+                height: 30px;
+                font-size: 0.8em;
             }
 
             .step-label {
-                font-size: 0.7em;
+                font-size: 0.55em;
+                max-width: 50px;
+            }
+
+            .question {
+                font-size: 1.1em;
+            }
+
+            .options-grid {
+                grid-template-columns: 1fr 1fr;
+                gap: 8px;
+            }
+
+            .option-card {
+                padding: 12px 8px;
+            }
+
+            .option-icon {
+                font-size: 1.8em;
+            }
+
+            .option-label {
+                font-size: 0.85em;
             }
         }
 
@@ -502,6 +1008,7 @@
         const app = {
             currentStep: 1,
             totalSteps: 6,
+            deviceType: 'desktop',
             data: {
                 clientType: null,
                 numberOfPeople: null,
@@ -524,10 +1031,41 @@
                 { id: 6, label: 'Resultado' }
             ],
 
+            detectDevice() {
+                const width = window.innerWidth;
+                const userAgent = navigator.userAgent.toLowerCase();
+
+                // Detectar por user agent primero
+                const isMobile = /android|webos|iphone|ipod|blackberry|iemobile|opera mini/i.test(userAgent);
+                const isTablet = /ipad|tablet|playbook|silk/i.test(userAgent) ||
+                    (isMobile && width >= 768);
+
+                // Confirmar con ancho de pantalla
+                if (width <= 480 || (isMobile && !isTablet)) {
+                    this.deviceType = 'mobile';
+                } else if (width <= 1024 || isTablet) {
+                    this.deviceType = 'tablet';
+                } else {
+                    this.deviceType = 'desktop';
+                }
+
+                // Añadir clase al body para estilos específicos
+                document.body.classList.remove('device-mobile', 'device-tablet', 'device-desktop');
+                document.body.classList.add(`device-${this.deviceType}`);
+
+                return this.deviceType;
+            },
+
             init() {
                 DB.init();
+                this.detectDevice();
                 this.loadLogo();
                 this.renderStep();
+
+                // Re-detectar en resize
+                window.addEventListener('resize', () => {
+                    this.detectDevice();
+                });
             },
 
             loadLogo() {
@@ -659,51 +1197,311 @@
                     `;
                 }
 
+                // Si ya hay producto seleccionado, mostrar selección de precios
+                if (this.data.selectedProduct) {
+                    return this.renderPriceSelection();
+                }
+
+                // Si no, mostrar lista de productos
                 return `
                     <div class="question">¿Qué producto prefieres?</div>
                     ${filteredProducts.map((product, idx) => `
                         <div class="product-card ${this.data.selectedProduct?.id === product.id ? 'selected' : ''}"
                              onclick="app.selectProduct(${idx})">
-                            <div class="product-name">${product.name}</div>
-                            ${product.image ? `<img src="${product.image}" alt="${product.name}" class="product-image">` : ''}
-                            <div class="price-options">
-                                ${this.renderPriceOptions(product)}
+                            ${product.image ? `
+                                <div class="product-image-container">
+                                    <img src="${product.image}" alt="${product.name}" class="product-image">
+                                </div>
+                            ` : ''}
+                            <div class="product-info">
+                                <div class="product-name">${product.name}</div>
                             </div>
                         </div>
                     `).join('')}
                 `;
             },
 
-            renderPriceOptions(product) {
+            renderPriceSelection() {
+                const product = this.data.selectedProduct;
                 const prices = this.data.clientType === 'empresa' ? product.pricesEmpresa : product.pricesHogar;
                 const paymentOptions = [
-                    { key: 'unico', label: 'Único' },
-                    { key: 'm12', label: '12m' },
-                    { key: 'm24', label: '24m' },
-                    { key: 'm36', label: '36m' },
-                    { key: 'm48', label: '48m' },
-                    { key: 'm60', label: '60m' }
+                    { key: 'unico', label: 'Pago Único', desc: 'Un solo pago' },
+                    { key: 'm12', label: '12 meses', desc: 'Financiación' },
+                    { key: 'm24', label: '24 meses', desc: 'Financiación' },
+                    { key: 'm36', label: '36 meses', desc: 'Financiación' },
+                    { key: 'm48', label: '48 meses', desc: 'Financiación' },
+                    { key: 'm60', label: '60 meses', desc: 'Financiación' }
                 ];
 
-                return paymentOptions.map(opt => {
-                    if (!prices[opt.key] || prices[opt.key] === 0) return '';
-                    const price = prices[opt.key];
-                    const finalPrice = this.data.clientType === 'empresa' ? price * 1.21 : price;
-                    return `
-                        <div class="price-option ${this.data.selectedPayment === opt.key ? 'selected' : ''}"
-                             onclick="event.stopPropagation(); app.selectPayment('${opt.key}')">
-                            ${opt.label}<br><strong>${finalPrice.toFixed(2)}€</strong>
+                const availableOptions = paymentOptions.filter(opt => prices[opt.key] && prices[opt.key] > 0);
+
+                return `
+                    <div class="price-selection-container">
+                        <div class="question">Selecciona tu plan de pago</div>
+                        <div class="selected-product-preview">
+                            ${product.image ? `<img src="${product.image}" alt="${product.name}">` : ''}
+                            <div class="product-name">${product.name}</div>
+                            <button class="btn-change-product" onclick="app.changeProduct()">Cambiar</button>
                         </div>
-                    `;
-                }).join('');
+                        <div class="price-options">
+                            ${availableOptions.map(opt => {
+                                const price = prices[opt.key];
+                                const finalPrice = this.data.clientType === 'empresa' ? price * 1.21 : price;
+                                const isMonthly = opt.key !== 'unico';
+                                return `
+                                    <div class="price-option ${this.data.selectedPayment === opt.key ? 'selected' : ''}"
+                                         onclick="app.selectPayment('${opt.key}')">
+                                        <div class="price-label">${opt.label}</div>
+                                        <div class="price-value">${finalPrice.toFixed(2)}€${isMonthly ? '/mes' : ''}</div>
+                                    </div>
+                                `;
+                            }).join('')}
+                        </div>
+                    </div>
+                `;
+            },
+
+            changeProduct() {
+                this.data.selectedProduct = null;
+                this.data.selectedPayment = null;
+                this.renderStep();
             },
 
             renderStep5() {
-                return '<div class="question">Paso 5 - En desarrollo</div>';
+                const products = DB.get('products') || [];
+                const extras = products.filter(p =>
+                    p.isExtra &&
+                    (p.clientType === this.data.clientType || !p.clientType)
+                );
+
+                if (extras.length === 0) {
+                    return `
+                        <div class="question">Extras adicionales</div>
+                        <p style="text-align:center;color:#666;padding:20px;">
+                            No hay extras disponibles para tu configuración.
+                        </p>
+                        <p style="text-align:center;color:#888;font-size:0.9em;">
+                            Puedes continuar al siguiente paso.
+                        </p>
+                    `;
+                }
+
+                return `
+                    <div class="question">¿Quieres añadir algún extra?</div>
+                    <p style="text-align:center;color:#666;margin-bottom:20px;font-size:0.9em;">
+                        Selecciona los extras que desees (opcional)
+                    </p>
+                    <div class="extras-grid">
+                        ${extras.map((extra, idx) => {
+                            const isSelected = this.data.selectedExtras.some(e => e.id === extra.id);
+                            const prices = this.data.clientType === 'empresa' ? extra.pricesEmpresa : extra.pricesHogar;
+                            const price = prices?.unico || prices?.m12 || 0;
+                            const finalPrice = this.data.clientType === 'empresa' ? price * 1.21 : price;
+
+                            return `
+                                <div class="extra-card ${isSelected ? 'selected' : ''}"
+                                     onclick="app.toggleExtra(${idx})">
+                                    <div class="extra-check">${isSelected ? '✓' : ''}</div>
+                                    ${extra.image ? `<img src="${extra.image}" alt="${extra.name}" class="extra-image">` : ''}
+                                    <div class="extra-name">${extra.name}</div>
+                                    ${finalPrice > 0 ? `<div class="extra-price">+${finalPrice.toFixed(2)}€</div>` : ''}
+                                </div>
+                            `;
+                        }).join('')}
+                    </div>
+                `;
+            },
+
+            toggleExtra(idx) {
+                const products = DB.get('products') || [];
+                const extras = products.filter(p =>
+                    p.isExtra &&
+                    (p.clientType === this.data.clientType || !p.clientType)
+                );
+                const extra = extras[idx];
+
+                const existingIdx = this.data.selectedExtras.findIndex(e => e.id === extra.id);
+                if (existingIdx >= 0) {
+                    this.data.selectedExtras.splice(existingIdx, 1);
+                } else {
+                    this.data.selectedExtras.push(extra);
+                }
+                this.renderStep();
             },
 
             renderStep6() {
-                return '<div class="question">Resultado - En desarrollo</div>';
+                const calculations = this.calculateSavings();
+
+                return `
+                    <div class="question">Tu resultado de ahorro</div>
+                    <div class="result-container">
+                        <div class="result-summary">
+                            <div class="result-product">
+                                ${this.data.selectedProduct?.image ?
+                                    `<img src="${this.data.selectedProduct.image}" alt="${this.data.selectedProduct.name}" class="result-product-image">` : ''}
+                                <div class="result-product-info">
+                                    <h3>${this.data.selectedProduct?.name || 'Producto'}</h3>
+                                    <p>Plan: ${this.getPaymentLabel()}</p>
+                                </div>
+                            </div>
+
+                            <div class="result-numbers">
+                                <div class="result-item">
+                                    <span class="result-label">Coste actual mensual</span>
+                                    <span class="result-value current">${calculations.currentCost.toFixed(2)}€</span>
+                                </div>
+                                <div class="result-item">
+                                    <span class="result-label">Con nuestra solución</span>
+                                    <span class="result-value new">${calculations.newCost.toFixed(2)}€</span>
+                                </div>
+                                <div class="result-item savings">
+                                    <span class="result-label">Ahorro mensual</span>
+                                    <span class="result-value">${calculations.monthlySavings.toFixed(2)}€</span>
+                                </div>
+                                <div class="result-item annual">
+                                    <span class="result-label">Ahorro anual</span>
+                                    <span class="result-value highlight">${calculations.annualSavings.toFixed(2)}€</span>
+                                </div>
+                            </div>
+
+                            ${this.data.selectedExtras.length > 0 ? `
+                                <div class="result-extras">
+                                    <h4>Extras incluidos:</h4>
+                                    <ul>
+                                        ${this.data.selectedExtras.map(e => `<li>${e.name}</li>`).join('')}
+                                    </ul>
+                                </div>
+                            ` : ''}
+                        </div>
+
+                        <div class="result-actions">
+                            <button class="btn btn-primary" onclick="app.generateQuote()">
+                                Generar Presupuesto PDF
+                            </button>
+                            <button class="btn btn-secondary" onclick="app.startOver()">
+                                Nueva Consulta
+                            </button>
+                        </div>
+                    </div>
+                `;
+            },
+
+            getPaymentLabel() {
+                const labels = {
+                    'unico': 'Pago Único',
+                    'm12': '12 meses',
+                    'm24': '24 meses',
+                    'm36': '36 meses',
+                    'm48': '48 meses',
+                    'm60': '60 meses'
+                };
+                return labels[this.data.selectedPayment] || 'No seleccionado';
+            },
+
+            calculateSavings() {
+                let currentCost = 0;
+                let newCost = 0;
+
+                // Calcular coste actual según el servicio
+                const numPeople = this.getNumPeople();
+                const litersPerPerson = 2; // Litros por persona al día
+                const daysPerMonth = 30;
+                const litersPerMonth = numPeople * litersPerPerson * daysPerMonth;
+
+                switch(this.data.currentService) {
+                    case 'bottled':
+                        const brands = DB.get('waterBrands') || [];
+                        const avgPrice = brands.length > 0
+                            ? brands.reduce((sum, b) => sum + b.pricePerLiter, 0) / brands.length
+                            : 0.30;
+                        currentCost = litersPerMonth * avgPrice;
+                        break;
+                    case 'aquaservice':
+                        const aquaPrices = DB.get('aquaservicePrices') || {};
+                        const bottles = Math.ceil(litersPerMonth / 18.9); // Botellones de 18.9L
+                        const bottleKey = Math.min(Math.max(bottles, 2), 8);
+                        currentCost = (aquaPrices[bottleKey] || 29.90) * (30/28); // Ajuste mensual
+                        break;
+                    case 'tap':
+                        currentCost = litersPerMonth * 0.002; // Agua del grifo muy barata
+                        break;
+                    case 'osmosis':
+                        currentCost = 25; // Coste medio de mantenimiento osmosis actual
+                        break;
+                }
+
+                // Calcular nuevo coste
+                if (this.data.selectedProduct && this.data.selectedPayment) {
+                    const prices = this.data.clientType === 'empresa'
+                        ? this.data.selectedProduct.pricesEmpresa
+                        : this.data.selectedProduct.pricesHogar;
+
+                    let productPrice = prices[this.data.selectedPayment] || 0;
+                    if (this.data.clientType === 'empresa') {
+                        productPrice *= 1.21;
+                    }
+
+                    // Si es pago único, dividir por meses estimados de uso
+                    if (this.data.selectedPayment === 'unico') {
+                        newCost = productPrice / 60; // Amortización a 5 años
+                    } else {
+                        newCost = productPrice;
+                    }
+
+                    // Añadir extras
+                    this.data.selectedExtras.forEach(extra => {
+                        const extraPrices = this.data.clientType === 'empresa'
+                            ? extra.pricesEmpresa
+                            : extra.pricesHogar;
+                        let extraPrice = extraPrices?.unico || extraPrices?.m12 || 0;
+                        if (this.data.clientType === 'empresa') {
+                            extraPrice *= 1.21;
+                        }
+                        newCost += extraPrice / 60;
+                    });
+                }
+
+                const monthlySavings = Math.max(0, currentCost - newCost);
+                const annualSavings = monthlySavings * 12;
+
+                return {
+                    currentCost,
+                    newCost,
+                    monthlySavings,
+                    annualSavings
+                };
+            },
+
+            getNumPeople() {
+                const val = this.data.numberOfPeople;
+                if (!val) return 2;
+                if (val === '+6' || val === '+15') return 10;
+                if (val.includes('-')) {
+                    const parts = val.split('-');
+                    return (parseInt(parts[0]) + parseInt(parts[1])) / 2;
+                }
+                return parseInt(val) || 2;
+            },
+
+            generateQuote() {
+                alert('Funcionalidad de generación de PDF en desarrollo');
+            },
+
+            startOver() {
+                this.currentStep = 1;
+                this.data = {
+                    clientType: null,
+                    numberOfPeople: null,
+                    currentService: null,
+                    currentServiceDetails: {},
+                    selectedProduct: null,
+                    selectedPayment: null,
+                    selectedExtras: [],
+                    selectedDouble: null,
+                    installation: 0,
+                    maintenanceIncluded: true
+                };
+                this.renderStep();
             },
 
             // Actions
